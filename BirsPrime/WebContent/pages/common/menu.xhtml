@@ -1,0 +1,152 @@
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="logo-media">
+		<p:media value="#{infoPageBean.depthPage}/swf/logo-bplus-bagliore.swf"
+			id="moveFlash" width="90%" height="90" player="flash">
+			<f:param name="autoPlay" value="true" />
+			<f:param name="wmode" value="transparent" />
+		</p:media>
+	</div>
+	<h:form style="height:22px;" prependId="false">
+
+		<div class="menu-div">
+			<p:menubar autoDisplay="false" styleClass="menu-bar">
+				<p:menuitem value="Gestione Utenti" icon="ui-icon-contact"
+					rendered="#{loginBean.loggedUser.admin}"
+					action="#{reportBean.filterUser}" />
+				<p:menuitem value="Modelli Vlt" icon="ui-icon-contact"
+					rendered="#{loginBean.loggedUser.admin}"
+					action="#{reportBean.filterVltModel}" />
+				<p:menuitem value="Upload Img Giochi" icon="ui-icon-disk"
+					rendered="#{loginBean.loggedUser.admin}"
+					action="#{reportBean.filterUploadImgGame}" />
+				<p:submenu label="Report" icon="ui-icon-contact" styleClass="sub-menu">
+						
+							<p:menuitem value="Regione" icon="star"
+								action="#{reportBean.filterDataOnRegion}" />
+							<p:menuitem value="Location" icon="star"
+								action="#{reportBean.filterDataOnLocation}" />
+							<p:menuitem value="Fasce Orarie" icon="star"
+								action="#{reportBean.filterDataOnLocationHour}" />
+							<p:menuitem value="Vlt" icon="star"
+								action="#{reportBean.filterDataOnVlt}" />
+							<p:menuitem value="Vlt Dismesse" icon="star"
+								action="#{reportBean.filterDataOnVltDismissed}" />
+							<p:menuitem value="Giochi" icon="star"
+								action="#{reportBean.filterDataOnGame}" />
+							<p:menuitem value="Giochi Sale" icon="star"
+								action="#{reportBean.filterDataOnLocationGame}" />
+							<p:menuitem value="Totale Giochi" icon="star"
+								action="#{reportBean.filterDataOnGroupedGame}" />
+						<p:submenu label="Novomatic" icon="star" styleClass="sub-menu" rendered="false">
+							<p:menuitem value="Regione" icon="star"
+								action="#{reportBean.filterDataOnRegionNovomatic}" />
+							<p:menuitem value="Location" icon="star"
+								action="#{reportBean.filterDataOnLocationNovomatic}" />
+							<p:menuitem value="Fasce Orarie" icon="star"
+								action="#{reportBean.filterDataOnLocationHourNovomatic}" />
+							<p:menuitem value="Vlt" icon="star"
+								action="#{reportBean.filterDataOnVltNovomatic}" />
+							<p:menuitem value="Giochi" icon="star"
+								action="#{reportBean.filterDataOnGameNovomatic}" />
+							<p:menuitem value="Giochi Sale" icon="star"
+								action="#{reportBean.filterDataOnLocationGameNovomatic}" />
+							<p:menuitem value="Totale Giochi" icon="star"
+								action="#{reportBean.filterDataOnGroupedGameNovomatic}" />
+						</p:submenu>
+						<p:submenu label="Inspired" icon="star" styleClass="sub-menu" rendered="false">
+							<p:menuitem value="Regione" icon="star"
+								action="#{reportBean.filterDataOnRegionInspired}"/>
+							<p:menuitem value="Location" icon="star"
+								action="#{reportBean.filterDataOnLocationInspired}" />
+							<p:menuitem value="Fasce Orarie" icon="star"
+								action="#{reportBean.filterDataOnLocationHourInspired}" />
+							<p:menuitem value="Vlt" icon="star"
+								action="#{reportBean.filterDataOnVltInspired}" />
+							<p:menuitem value="Giochi" icon="star"
+								action="#{reportBean.filterDataOnGameInspired}" />
+							<p:menuitem value="Giochi Sale" icon="star"
+								action="#{reportBean.filterDataOnLocationGameInspired}" />
+							<p:menuitem value="Totale Giochi" icon="star"
+								action="#{reportBean.filterDataOnGroupedGameInspired}" />
+						</p:submenu>
+				</p:submenu>
+				<p:submenu label="Grafici" icon="ui-icon-contact">
+					<p:menuitem value="Sistema Gioco" icon="star"
+						action="#{sysGiocoChartBean.refreshChartAction('lineSysGameChart')}" />
+					<p:menuitem value="Regioni" icon="star"
+						action="#{regionChartBean.refreshChartAction('pieRegionChart')}" />
+					<p:menuitem value="Location" icon="star"
+						action="#{locationChartBean.refreshChartAction('lineLocationChart')}" />
+					<p:menuitem value="Vlt" icon="star"
+						action="#{vltChartBean.refreshChartAction('lineVltChart')}" />
+					<p:menuitem value="Giochi" icon="star"
+						action="#{gameChartBean.refreshChartAction('lineGameChart')}" />
+					<p:menuitem value="Giochi Sale" icon="star"
+						action="#{gameLocationChartBean.refreshChartAction('lineGameLocationChart')}" />
+				</p:submenu>
+				<p:menuitem value="Vlt Milionarie" icon="ui-icon-contact"
+					rendered="#{loginBean.loggedUser.presidio}"
+					action="#{reportBean.filterMillionVlt}" />
+
+
+				<p:submenu label="Confronti" icon="ui-icon-contact"
+					rendered="#{loginBean.loggedUser.coge}">
+					<p:menuitem value="Location" icon="star"
+						action="#{reportBean.filterDataMatcherOnLocation}" />
+					<p:menuitem value="Vlt" icon="star"
+						action="#{reportBean.filterDataMatcherOnVlt}" />
+				</p:submenu>
+
+
+				<p:menuitem value="BI" icon="ui-icon-star"
+					rendered="#{loginBean.loggedUser.coge}"
+					action="#{reportBean.goToBi}" />
+				<p:menuitem value="Reimport" icon="ui-icon-alert"
+					rendered="#{loginBean.loggedUser.admin}"
+					action="#{reportBean.goToReimport}" />
+			</p:menubar>
+
+
+
+			<div class="menu-filler" />
+			<div class="quit-div">
+				<p:commandButton styleClass="quit-button"
+					action="#{loginBean.logout}" icon="ui-icon-quit" />
+			</div>
+			<div class="who-is">
+				<h:outputLabel value="NOME: " />
+				<h:outputText value="#{loginBean.loggedUser.nome}" />
+				<h:outputLabel value="- COGNOME: " />
+				<h:outputText value="#{loginBean.loggedUser.cognome}" />
+			</div>
+			<div class="info-log-text">
+				<h:outputText
+					value="DATA AGGIORNAMENTO "></h:outputText>
+
+				<h:outputText
+					value=" #{infoPageBean.logI.aams_game_system_code}:"></h:outputText>
+
+				<h:outputText value="#{infoPageBean.logI.dataEnd}">
+					<f:convertDateTime
+						pattern="#{languageBean.dateTimePatternSelected}" />
+				</h:outputText>
+
+				<h:outputText
+					value=" #{infoPageBean.logN.aams_game_system_code} "></h:outputText>
+
+				<h:outputText value="#{infoPageBean.logN.dataEnd}">
+					<f:convertDateTime
+						pattern="#{languageBean.dateTimePatternSelected}" />
+				</h:outputText>
+
+			</div>
+		</div>
+	</h:form>
+</ui:composition>

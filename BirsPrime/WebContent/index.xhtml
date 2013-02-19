@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    >  
+    
+	<h:head> 
+	<link rel="stylesheet" type="text/css" href="css/style-index.css" media="screen" />
+		
+   </h:head>  
+
+      
+    <h:body> 
+    
+    <h:outputScript library="javascript" name="common.js" target="head"/>
+		<div id="top">		
+				<img src="images/line-1_top.png" id="line-top1" class="abs"/>
+				<img src="images/line-2_top.png" id="line-top2" class="abs"/>
+				<img src="images/line-3_top.png" id="line-top3" class="abs"/>
+		</div>       
+      	<div id="wrapperLogin">      			
+      		<div id="contentLogin">
+	     		<h:form id="loginForm" prependId="false" >  
+	     			
+	     			<p:messages id="msgs" showDetail="true"/>
+	     			<p:focus context="loginForm"/>  
+	     			
+					<p:panel id="generalPanel">
+					
+						<h:panelGrid columns="1">
+							<p:media value="swf/move.swf" id="moveFlash" width="225" height="80" player="flash">  
+						    	<f:param name="autoPlay" value="true" /> 
+						    	<f:param name="wmode" value="transparent" /> 
+							</p:media>
+						</h:panelGrid>
+						
+	     				<h:panelGrid id="panelLogin" columns="2" cellpadding="1" styleClass="panelGridLoginClass">						
+   							<h:outputLabel for="username" value="USERNAME" style="font-size:14px !important;" />      									
+							<h:inputText id="username" value="#{loginBean.username}" label="Username" size="12" />	
+							<h:outputLabel for="password" value="PASSWORD" style="font-size:14px !important;" />      									
+							<h:inputSecret id="password" value="#{loginBean.password}" label="Password" size="12" />		
+	     				</h:panelGrid>
+	     				
+	     				<h:panelGrid id="panelBrowserSup" columns="2">
+	     				    <h:outputLabel value="Browser Supportati" id="labelBrowserSup" />
+	     				    <h:panelGrid columns="2">
+		     				    <p:graphicImage value="/images/chrome.png" />
+						        <p:graphicImage value="/images/firefox.png" />
+					        </h:panelGrid>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="1" id="buttonOk">
+					        <p:commandButton value="OK" update="msgs" action="#{loginBean.login}" styleClass="buttonOK" ajax="false" />
+	     				</h:panelGrid>
+	     				
+	     			</p:panel>
+			
+				</h:form>  
+				
+      		</div>
+      
+      	</div>
+      	<div id="bottom">		
+				<img src="images/line-1.png" id="line-top1-bottom" class="abs" style="bottom:0px;"/>
+				<img src="images/line-2.png" id="line-top2-bottom" class="abs" style="bottom:0px;"/>
+				<img src="images/line-3.png" id="line-top3-bottom" class="abs" style="bottom:0px;"/>
+		</div> 
+      
+    </h:body>  
+    
+</html>

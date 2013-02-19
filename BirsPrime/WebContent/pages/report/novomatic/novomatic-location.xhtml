@@ -1,0 +1,486 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../../../css/style.css"
+		media="screen" />
+	<meta http-equiv="refresh"
+		content="#{session.maxInactiveInterval};url=novomatic-location.xhtml?faces-redirect=true" />
+</h:head>
+<h:body style="margin:0px;">
+	<div class="space"></div>
+	<ui:include src="../../common/menu.xhtml" />
+	<h:form id="form">
+		<p:growl id="messages" showDetail="true" autoUpdate="true" />
+		<h:panelGroup>
+			<h:panelGrid columns="1" styleClass="title-filter">
+				<h:outputText value="NOVOMATIC LOCATION #{infoPageBean.page_info}"
+					style="font-style: bold;font-weight: bold;" id="title" />
+			</h:panelGrid>
+			<div class="report-filter">
+				<h:panelGrid columns="13" id="report">
+					<h:outputText value="da" styleClass="white"/>
+					<p:calendar id="dateStart" effect="slideDown" size="12"
+						navigator="true" lang="it" value="#{reportBean.dataS}"
+						pattern="dd/MM/yyyy" mindate="01/09/2010"
+						maxdate="#{reportBean.oggi}">
+						<p:ajax event="dateSelect" listener="#{reportBean.changeDataS}"
+							update="buttonFilterData" />
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:calendar>
+					<h:outputText value="a" styleClass="white"/>
+					<p:calendar id="dateEnd" effect="slideDown" size="12"
+						navigator="true" lang="it" value="#{reportBean.dataE}"
+						pattern="dd/MM/yyyy" mindate="01/09/2010"
+						maxdate="#{reportBean.oggi}">
+						<p:ajax event="dateSelect" listener="#{reportBean.changeDataE}"
+							update="buttonFilterData" />
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:calendar>
+					<p:commandButton id="buttonFilterData" value="OK"
+						disabled="#{reportBean.errorDate}"
+						actionListener="#{reportBean.filterDataOnLocationNovomatic}"
+						onclick="dialogModal.show();" oncomplete="tab.filter();"
+						update="locationReportTable,modalDialog" />
+					<p:selectOneRadio id="options-day"
+						value="#{reportBean.modSingTotDay}" >
+						<p:ajax event="change"
+							listener="#{tableBeanLocation.refreshTableList}"
+							update="locationReportTable,title" oncomplete="tab.filter();" />
+						<f:selectItem itemLabel="Singoli Giorni" itemValue="false" />
+						<f:selectItem itemLabel="Totale Giorni" itemValue="true" />
+					</p:selectOneRadio>
+
+					<p:separator style="width:2px;height:20px" />
+					<p:selectOneRadio id="options-loc"
+						value="#{reportBean.modAllOpenLoc}" >
+						<p:ajax event="change"
+							listener="#{tableBeanLocation.refreshTableList}"
+							update="locationReportTable,title" oncomplete="tab.filter();" />
+						<f:selectItem itemLabel="Tutte Sale" itemValue="false" />
+						<f:selectItem itemLabel="Solo Sale Aperte" itemValue="true" />
+					</p:selectOneRadio>
+					<p:separator style="width:2px;height:20px" />
+					<p:selectOneMenu id="filterBet" value="#{reportBean.betOpt}"
+						styleClass="filter">
+						<f:selectItems value="#{reportBean.contabilityOptions}"
+							var="betOpt" itemValue="#{betOpt}" itemLabel="#{betOpt.label}" />
+						<p:ajax event="change"
+							listener="#{tableBeanLocation.refreshTableList}"
+							update="locationReportTable" oncomplete="tab.filter();" />
+
+					</p:selectOneMenu>
+
+
+#{tableBeanLocation.excelExporter.setColumnCut('5')}
+#{tableBeanLocation.excelExporter.setNotNumericColumns('1|2|3|4|5')}
+		<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+						<p:graphicImage value="../../../images/excel.png"
+							styleClass="no-border" />
+						<p:dataExporter type="xls" target="locationReportTable"
+							fileName="Novomatic_Location_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}"
+							postProcessor="#{tableBeanLocation.excelExporter.postProcessXLS}" />
+					</h:commandLink>
+					<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+						<p:graphicImage value="../../../images/csv.png"
+							styleClass="no-border" />
+						<p:dataExporter type="csv" target="locationReportTable"
+							fileName="Novomatic_Location_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}" />
+					</h:commandLink>
+					<p:graphicImage value="../../../images/noexcel.png"
+						styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+					<p:graphicImage value="../../../images/nocsv.png"
+						styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+
+
+
+				</h:panelGrid>
+			</div>
+
+			<p:dialog id="modalDialog" visible="false" widgetVar="dialogModal"
+				modal="true" closable="false" draggable="false" resizable="false">
+				<p:ajaxStatus onstart="dialogModal.show()"
+					oncomplete="dialogModal.hide()" />
+				<p:graphicImage value="../../../images/loading.gif" />
+			</p:dialog>
+			<p:remoteCommand name="updateFooter"
+				update=":form:locationReportTable:footer"
+				oncomplete="dialogModal.hide()" />
+
+			<div class="report-table-div">
+				<p:dataTable var="meterfactLocation"
+					value="#{tableBeanLocation.tableList}"
+					rowKey="#{meterfactLocation.sistemagiocodim.AAMS_GAMESYSTEM_ID}-#{meterfactLocation.tempodim.simpleTempodimToString()}-#{meterfactLocation.sistemagiocodim.loc.AAMS_LOCATION_ID}"
+					paginator="true" rows="20"
+					filteredValue="#{tableBeanLocation.filteredTableList}"
+					widgetVar="tab" selection="#{tableBeanLocation.selectedObj}"
+					selectionMode="single" id="locationReportTable"
+					additionalScrollHeight="300" paginator="true" rows="100" paginatorPosition="top" resizableColumns="true">
+
+
+					<p:ajax event="rowSelect" update=":form:display"
+						oncomplete="locDialog.show()" />
+
+					<p:ajax event="filter" listener="#{tableBeanLocation.handleFilter}"
+						oncomplete="updateFooter();" />
+
+					<p:column sortBy="#{meterfactLocation.tempodim.data}" id="data"
+						rendered="#{!reportBean.modSingTotDay}">
+						<f:facet name="header">
+							<h:outputText value="DATA" />
+						</f:facet>
+
+
+						<h:outputText value="#{meterfactLocation.tempodim.data}">
+							<f:convertDateTime timeZone="CET" locale="#{languageBean.locale}"
+								pattern="#{languageBean.datePatternSelected}" />
+						</h:outputText>
+
+					</p:column>
+
+					<p:column
+						sortBy="#{meterfactLocation.sistemagiocodim.loc.AAMS_LOCATION_ID}"
+						filterBy="#{meterfactLocation.sistemagiocodim.loc.AAMS_LOCATION_ID}"
+						filterMatchMode="contains" id="aams_location_code">
+						<f:facet name="header">
+							<h:outputText value="LOC CODE" />
+						</f:facet>
+						<h:outputText
+							value="#{meterfactLocation.sistemagiocodim.loc.AAMS_LOCATION_ID}" />
+					</p:column>
+
+					<p:column
+						sortBy="#{meterfactLocation.sistemagiocodim.loc.COMMERCIAL_NAME}"
+						filterBy="#{meterfactLocation.sistemagiocodim.loc.COMMERCIAL_NAME}"
+						filterMatchMode="contains" id="aams_location_name"
+						styleClass="location_column">
+						<f:facet name="header">
+							<h:outputText value="LOC NAME" />
+						</f:facet>
+						<h:outputText
+							value="#{meterfactLocation.sistemagiocodim.loc.COMMERCIAL_NAME}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.spaziodim.comune.nome}"
+						filterBy="#{meterfactLocation.spaziodim.comune.nome}"
+						filterMatchMode="contains" id="comune">
+						<f:facet name="header">
+							<h:outputText value="COMUNE" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.spaziodim.comune.nome}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.spaziodim.provincia.sigla}"
+						filterBy="#{meterfactLocation.spaziodim.provincia.sigla}"
+						filterMatchMode="contains" id="provincia">
+						<f:facet name="header">
+							<h:outputText value="PROVINCIA" />
+						</f:facet>
+						<h:outputText
+							value="#{meterfactLocation.spaziodim.provincia.sigla}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.bet}" id="bet"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="BET" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.bet}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.win}" id="win"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="WIN" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.win}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.gamesPlayed}"
+						id="gamesPlayed" styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="GAMES PLAYED" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.gamesPlayed}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.totalIn}" id="totalIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TOTAL IN" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.totalIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.totalOut}" id="totalOut"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TOTAL OUT" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.totalOut}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.ticketIn}" id="ticketIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TICKET IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.ticketIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.ticketOut}" id="ticketOut"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TICKET OUT" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.ticketOut}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.coinIn}" id="coinIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="COIN IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.coinIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.billIn}" id="billIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="BILL IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.billIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.cardIn}" id="cardIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="CARD IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.cardIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.prepaidIn}"
+						id="totalPrepaidIn" styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="PREPAID IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.prepaidIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.handpay}" id="totalHandpay"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="HANDPAY" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.handpay}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactLocation.numVlt}" id="numVlt"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="NUM VLT" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.numVlt}" />
+					</p:column>
+
+					<p:column id="tab_preu" rendered="false">
+						<f:facet name="header">
+							<h:outputText value="PREU" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.preu}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_aams" rendered="false">
+						<f:facet name="header">
+							<h:outputText value="AAMS" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.aams}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_netwin" rendered="false">
+						<f:facet name="header">
+							<h:outputText value="NET WIN" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.netWin}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_housewin" rendered="false">
+						<f:facet name="header">
+							<h:outputText value="HOUSE WIN" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.houseWin}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_supplier_profit" rendered="false">
+						<f:facet name="header">
+							<h:outputText value="Supplier Profit" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_operator_profit" rendered="false">
+						<f:facet name="header">
+							<h:outputText value="Operator Profit" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_bplus_netprofit" rendered="false">
+						<f:facet name="header">
+							<h:outputText value="Bplus NetProfit" />
+						</f:facet>
+						<h:outputText value="#{meterfactLocation.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<f:facet name="footer">
+						<div class="footer-table">
+							<p:panel id="footer" styleClass="footer">
+								<h:outputText value="TOTALI: dal  " style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataS}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText value=" al  " style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataE}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+
+
+								<h:outputText value=" - BET:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocation.totBet}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - WIN:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocation.totWin}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - GAMES PLAYED:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocation.totGamesPlayed}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - TOTAL IN:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocation.totTotalIn}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - TOTAL OUT:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocation.totTotalOut}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+							</p:panel>
+						</div>
+					</f:facet>
+
+				</p:dataTable>
+			</div>
+			<p:dialog header="Dati Contabili" widgetVar="locDialog"
+				resizable="false" width="300" showEffect="explode"
+				hideEffect="explode">
+				<center>
+					<h:panelGrid id="display" columns="2" cellpadding="4">
+
+						<f:facet name="header">
+							<p:graphicImage
+								value="../../../images/sysgioco/#{tableBeanLocation.selectedObj.sistemagiocodim.AAMS_GAMESYSTEM_ID}.jpg" />
+							<h:outputText value="Trend:" />
+							<p:graphicImage
+								value="../../../images/trend/#{tableBeanLocation.trend}.png"
+								width="38" height="38" />
+						</f:facet>
+
+						<h:outputText value="Preu:" />
+						<h:outputText value="#{tableBeanLocation.selectedObj.preu}"
+							id="preu" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Aams:" />
+						<h:outputText value="#{tableBeanLocation.selectedObj.aams}"
+							id="aams" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Net Win:" />
+						<h:outputText value="#{tableBeanLocation.selectedObj.netWin}"
+							id="netWin" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="House Win:" />
+						<h:outputText value="#{tableBeanLocation.selectedObj.houseWin}"
+							id="houseWin" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Supplier Profit:" />
+						<h:outputText
+							value="#{tableBeanLocation.selectedObj.supplierProfit}"
+							id="supplierProfit" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Operators Profit:" />
+						<h:outputText
+							value="#{tableBeanLocation.selectedObj.operatorsProfit}"
+							id="operatorsProfit" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Bplus NetProfit:" />
+						<h:outputText
+							value="#{tableBeanLocation.selectedObj.bplusNetProfit}"
+							id="bplusNetProfit" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+					</h:panelGrid>
+				</center>
+			</p:dialog>
+
+
+
+		</h:panelGroup>
+	</h:form>
+</h:body>
+</html>

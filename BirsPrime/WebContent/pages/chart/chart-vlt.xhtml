@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"
+		media="screen" />
+	<script>
+		function clearFilter(id, defval) {
+			$(PrimeFaces.escapeClientId('form-filter:' + id + '_input')).val(
+					defval);
+		}
+	</script>
+	<meta http-equiv="refresh"
+		content="#{session.maxInactiveInterval};url=chart-vlt.xhtml?faces-redirect=true" />
+</h:head>
+
+<h:body style="margin:0px;">
+	<div class="space"></div>
+	<h:form id="form-dialog">
+		<p:dialog id="modalDialog" visible="false" widgetVar="dialogModal"
+			modal="true" closable="false" draggable="false" resizable="false">
+			<p:ajaxStatus onstart="dialogModal.show()"
+				oncomplete="dialogModal.hide()" />
+			<p:graphicImage value="../../images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+	<ui:include src="../common/menu.xhtml" />
+	<p:layout fullPage="true">
+		<p:ajax event="resize" update=":form-chart:vlt-chart" />
+		<p:layoutUnit position="north" styleClass="layoutUnit-north">
+
+			<h:form id="form-filter">
+				<p:growl id="msgs" showDetail="true" autoUpdate="true" />
+				<h:panelGroup>
+					<div class="report-filter">
+						<h:panelGrid columns="8" id="report">
+							<h:outputText value="da" styleClass="white" />
+							<p:calendar id="dateStart" effect="slideDown" size="12"
+								navigator="true" lang="it" value="#{reportBean.dataS}"
+								pattern="dd/MM/yyyy" mindate="01/09/2010"
+								maxdate="#{reportBean.oggi}">
+								<p:ajax event="dateSelect" listener="#{reportBean.changeDataS}"
+									update="buttonFilterData" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:calendar>
+							<h:outputText value="a" styleClass="white" />
+							<p:calendar id="dateEnd" effect="slideDown" size="12"
+								navigator="true" lang="it" value="#{reportBean.dataE}"
+								pattern="dd/MM/yyyy" mindate="01/09/2010"
+								maxdate="#{reportBean.oggi}">
+								<p:ajax event="dateSelect" listener="#{reportBean.changeDataE}"
+									update="buttonFilterData" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:calendar>
+
+
+
+							<p:autoComplete forceSelection="false"
+								value="#{reportBean.selectedLocation}" id="locationDrop"
+								effect="fade" required="true"
+								completeMethod="#{reportBean.completeLocation}" var="loc"
+								itemLabel="#{loc}" itemValue="#{loc.AAMS_LOCATION_ID} - #{loc.COMMERCIAL_NAME}" size="50"
+								maxResults="20" onclick="clearFilter('locationDrop','');">
+								<f:ajax event="itemSelect" listener="#{reportBean.refreshVlts}"
+									render="vltDrop" />
+							</p:autoComplete>
+
+
+							<p:autoComplete forceSelection="false"
+								value="#{reportBean.selectedVlt}" id="vltDrop" effect="fade"
+								required="true" completeMethod="#{reportBean.completeVlt}"
+								var="vlt" itemLabel="#{vlt}" itemValue="#{vlt.AAMS_VLT_ID}"
+								size="20" maxResults="20" onclick="clearFilter('vltDrop','G');"
+								disabled="#{reportBean.noVlts}" />
+
+
+							<p:commandButton id="buttonFilterData" value="OK"
+								action="#{vltChartBean.refreshChartAction('lineVltChart')}"
+								disabled="#{reportBean.errorDate}" onclick="dialogModal.show();"
+								update=":form-chart:vlt-chart" />
+
+						</h:panelGrid>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" styleClass="layoutUnit-center">
+
+			<h:form id="form-chart">
+				<p:lineChart id="vlt-chart"
+					value="#{vltChartBean.getChartModel('lineVltChart')}"
+					legendPosition="ne" fill="false" xaxisLabel="Data" yaxisLabel="Bet"
+					title="Grafico Vlt della Sala - #{reportBean.selectedLocation}"
+					minY="0" maxY="#{vltChartBean.maxValue}" style="height:100%"
+					rendered="#{!reportBean.noVlts}">
+				</p:lineChart>
+			</h:form>
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+</html>

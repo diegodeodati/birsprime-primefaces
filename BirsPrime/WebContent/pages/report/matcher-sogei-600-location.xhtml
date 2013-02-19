@@ -1,0 +1,472 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"
+		media="screen" />
+	<meta http-equiv="refresh"
+		content="#{session.maxInactiveInterval};url=matcher-sogei-600-location.xhtml?faces-redirect=true" />
+</h:head>
+<h:body style="margin:0px;">
+	<div class="space"></div>
+	<h:form id="form-dialog">
+		<p:dialog id="modalDialog" visible="false" widgetVar="dialogModal"
+			modal="true" closable="false" draggable="false" resizable="false">
+			<p:ajaxStatus onstart="dialogModal.show()"
+				oncomplete="dialogModal.hide()" />
+			<p:graphicImage value="../../images/loading.gif" />
+		</p:dialog>
+		<p:dialog header="Dati Vlt Milionaria" widgetVar="millionDialog"
+			resizable="false" width="300" showEffect="fade" hideEffect="explode">
+			<center>
+				<h:panelGrid id="display" columns="2" cellpadding="4">
+
+					<h:outputText value="Aams Location Id:" />
+					<h:outputText
+						value="#{tableBeanMatcherLocation.selectedObj.MSogei.realMillionVlt.aams_location_id}"
+						id="aams_location_code" styleClass="cella">
+					</h:outputText>
+
+					<h:outputText value="Nome Location" />
+					<h:outputText
+						value="#{tableBeanMatcherLocation.selectedObj.MSogei.realMillionVlt.location_name}"
+						id="location_name" styleClass="cella">
+					</h:outputText>
+
+					<h:outputText value="Aams Vlt Id" />
+					<h:outputText
+						value="#{tableBeanMatcherLocation.selectedObj.MSogei.realMillionVlt.aams_vlt_id}"
+						id="aams_vlt_id" styleClass="cella">
+					</h:outputText>
+
+					<h:outputText value="Bet:" />
+					<h:outputText
+						value="#{tableBeanMatcherLocation.selectedObj.MSogei.realMillionVlt.bet}"
+						id="m_bet" styleClass="cella">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Win:" />
+					<h:outputText
+						value="#{tableBeanMatcherLocation.selectedObj.MSogei.realMillionVlt.win}"
+						id="m_win" styleClass="cella">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Bet Reale:" />
+					<h:outputText
+						value="#{tableBeanMatcherLocation.selectedObj.MSogei.realMillionVlt.bet_reale}"
+						id="m_real_bet" styleClass="cella">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Win Reale:" />
+					<h:outputText
+						value="#{tableBeanMatcherLocation.selectedObj.MSogei.realMillionVlt.win_reale}"
+						id="m_real_win" styleClass="cella">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+
+				</h:panelGrid>
+			</center>
+		</p:dialog>
+	</h:form>
+	<ui:include src="../common/menu.xhtml" />
+	<p:layout fullPage="true">
+		<p:ajax event="resize" update=":form-table:matcherLocationReportTable" />
+		<p:layoutUnit position="north" styleClass="layoutUnit-north">
+
+			<h:form id="form-filter">
+
+				<p:growl id="messages" showDetail="true" life="2000" />
+				<h:panelGroup>
+					<h:panelGrid columns="1" styleClass="title-filter">
+						<h:outputText
+							value="CONFRONTI 600 SOGEI LOCATION #{infoPageBean.page_info}"
+							style="font-style: bold;font-weight: bold;" id="title" />
+					</h:panelGrid>
+					<div class="report-filter">
+						<h:panelGrid columns="18" id="report">
+							<h:outputText value="da" styleClass="white" />
+							<p:calendar id="dateStart" effect="slideDown" size="12"
+								navigator="true" lang="it" value="#{reportBean.dataS}"
+								pattern="dd/MM/yyyy" mindate="01/09/2010"
+								maxdate="#{reportBean.oggi}">
+								<p:ajax event="dateSelect" listener="#{reportBean.changeDataS}"
+									update="buttonFilterData" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:calendar>
+							<h:outputText value="a" styleClass="white" />
+							<p:calendar id="dateEnd" effect="slideDown" size="12"
+								navigator="true" lang="it" value="#{reportBean.dataE}"
+								pattern="dd/MM/yyyy" mindate="01/09/2010"
+								maxdate="#{reportBean.oggi}">
+								<p:ajax event="dateSelect" listener="#{reportBean.changeDataE}"
+									update="buttonFilterData" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:calendar>
+
+							<p:commandButton id="buttonFilterData" value="OK"
+								disabled="#{reportBean.errorDate}"
+								actionListener="#{reportBean.filterDataMatcherOnLocation}"
+								onclick="dialogModal.show();" oncomplete="tab.filter();"
+								update=":form-table:matcherLocationReportTable" />
+
+
+							<p:selectOneRadio id="options-day"
+								value="#{reportBean.modSingTotDay}" layout="pageDirection">
+								<p:ajax event="change"
+									listener="#{tableBeanMatcherLocation.refreshTableList}"
+									update=":form-table:matcherLocationReportTable,title"
+									oncomplete="tab.filter();" />
+								<f:selectItem itemLabel="Singoli Giorni" itemValue="false" />
+								<f:selectItem itemLabel="Totale Giorni" itemValue="true" />
+							</p:selectOneRadio>
+							<p:separator style="width:2px;height:20px" />
+
+							<p:selectOneRadio id="options-loc"
+								value="#{reportBean.modAllOpenLoc}" layout="pageDirection">
+								<p:ajax event="change"
+									listener="#{tableBeanMatcherLocation.refreshTableList}"
+									update=":form-table:matcherLocationReportTable,title"
+									oncomplete="tab.filter();" />
+								<f:selectItem itemLabel="Tutte Sale" itemValue="false" />
+								<f:selectItem itemLabel="Solo Sale Aperte" itemValue="true" />
+							</p:selectOneRadio>
+
+							<p:separator style="width:2px;height:20px" />
+
+							<p:selectOneRadio id="options-million-vlt"
+								value="#{reportBean.modExcludeMillionVlt}"
+								layout="pageDirection">
+								<p:ajax event="change"
+									listener="#{tableBeanMatcherLocation.refreshTableList}"
+									update=":form-table:matcherLocationReportTable,title"
+									oncomplete="tab.filter();" />
+								<f:selectItem itemLabel="Includi Vlt Milionarie"
+									itemValue="false" />
+								<f:selectItem itemLabel="Escludi Vlt Milionarie"
+									itemValue="true" />
+							</p:selectOneRadio>
+
+							<p:separator style="width:2px;height:20px" />
+
+							<p:selectManyButton value="#{reportBean.matcherPreferences}"
+								id="preferences">
+								<f:selectItem itemLabel="B/W" itemValue="b" />
+								<f:selectItem itemLabel="T.IN/T.OUT" itemValue="t" />
+								<f:selectItem itemLabel="G.P." itemValue="g" />
+								<p:ajax event="change"
+									listener="#{tableBeanMatcherLocation.refreshTableList}"
+									update=":form-table:matcherLocationReportTable,preferences,messages"
+									oncomplete="tab.filter();" />
+							</p:selectManyButton>  
+
+		
+
+				
+    #{tableBeanMatcherLocation.excelExporter.setColumnCut('6')}
+    #{tableBeanMatcherLocation.excelExporter.setNotNumericColumns('1|2|3|4|5|6|15')}
+    
+    
+		<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+								<p:graphicImage value="../../images/excel.png"
+									styleClass="no-border" />
+								<p:dataExporter type="xls"
+									target=":form-table:matcherLocationReportTable"
+									fileName="Matcher_Location_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}"
+									postProcessor="#{tableBeanMatcherLocation.excelExporter.postProcessXLS}"
+									excludeColumns="14" />
+							</h:commandLink>
+							<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+								<p:graphicImage value="../../images/csv.png"
+									styleClass="no-border" />
+								<p:dataExporter type="csv"
+									target=":form-table:matcherLocationReportTable"
+									fileName="Matcher_Location_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}"
+									excludeColumns="14" />
+							</h:commandLink>
+							<p:graphicImage value="../../images/noexcel.png"
+								styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+							<p:graphicImage value="../../images/nocsv.png"
+								styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+							<p:graphicImage value="../../images/legenda.png"
+								styleClass="legenda" />
+						</h:panelGrid>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" styleClass="layoutUnit-center">
+
+			<h:form id="form-table">
+
+				<p:remoteCommand name="updateFooter"
+					update=":form-table:matcherLocationReportTable:footer,:form-filter"
+					oncomplete="dialogModal.hide()" />
+				<p:dataTable var="matcherLocation"
+					value="#{tableBeanMatcherLocation.tableList}"
+					id="matcherLocationReportTable"
+					emptyMessage="Nessuna Differenza Location Sogei - 600"
+					widgetVar="tab"
+					filteredValue="#{tableBeanMatcherLocation.filteredTableList}"
+					additionalScrollHeight="300" paginator="true" rows="100"
+					paginatorPosition="top" scrollable="true" scrollHeight="0"
+					resizableColumns="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {JumpToPageDropdown} {NextPageLink} {LastPageLink}">
+
+
+					<p:ajax event="filter"
+						listener="#{tableBeanMatcherLocation.handleFilter}"
+						oncomplete="updateFooter();" />
+
+					<p:column sortBy="#{matcherLocation.tempodim.data}" id="data"
+						rendered="#{!reportBean.modSingTotDay}" width="100">
+						<f:facet name="header">
+							<h:outputText value="DATA" />
+						</f:facet>
+
+
+						<h:outputText value="#{matcherLocation.tempodim.data}">
+							<f:convertDateTime timeZone="CET" locale="#{languageBean.locale}"
+								pattern="#{languageBean.datePatternSelected}" />
+						</h:outputText>
+
+					</p:column>
+
+					<p:column
+						sortBy="#{matcherLocation.sistemagiocodim.AAMS_GAMESYSTEM_ID}"
+						filterBy="#{matcherLocation.sistemagiocodim.AAMS_GAMESYSTEM_ID}"
+						filterOptions="#{reportBean.sistemagiocodimOptions}"
+						id="aams_gamesystem_code" rendered="#{!reportBean.modSingTotDay}"
+						width="100">
+						<f:facet name="header">
+							<h:outputText value="GAMESYSTEM" />
+						</f:facet>
+						<h:outputText
+							value="#{matcherLocation.sistemagiocodim.AAMS_GAMESYSTEM_ID}" />
+					</p:column>
+
+					<p:column
+						sortBy="#{matcherLocation.sistemagiocodim.loc.AAMS_LOCATION_ID}"
+						filterBy="#{matcherLocation.sistemagiocodim.loc.AAMS_LOCATION_ID}"
+						filterMatchMode="contains" id="aams_location_code" width="100">
+						<f:facet name="header">
+							<h:outputText value="LOC" />
+						</f:facet>
+						<h:outputText
+							value="#{matcherLocation.sistemagiocodim.loc.AAMS_LOCATION_ID}" />
+					</p:column>
+
+					<p:column
+						sortBy="#{matcherLocation.sistemagiocodim.loc.COMMERCIAL_NAME}"
+						filterBy="#{matcherLocation.sistemagiocodim.loc.COMMERCIAL_NAME}"
+						filterMatchMode="contains" id="aams_location_name"
+						styleClass="location_column" width="100">
+						<f:facet name="header">
+							<h:outputText value="LOC" />
+						</f:facet>
+						<h:outputText
+							value="#{matcherLocation.sistemagiocodim.loc.COMMERCIAL_NAME}" />
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.spaziodim.comune.nome}"
+						filterBy="#{matcherLocation.spaziodim.comune.nome}"
+						filterMatchMode="contains" id="comune" width="100">
+						<f:facet name="header">
+							<h:outputText value="COMUNE" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.spaziodim.comune.nome}" />
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.spaziodim.provincia.sigla}"
+						filterBy="#{matcherLocation.spaziodim.provincia.sigla}"
+						filterMatchMode="contains" id="provincia" width="100">
+						<f:facet name="header">
+							<h:outputText value="PROVINCIA" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.spaziodim.provincia.sigla}" />
+					</p:column>
+
+
+					<p:column sortBy="#{matcherLocation.MSogei.bet}" id="bet_sogei"
+						styleClass="cella" style="#{matcherLocation.colorDiffBet}"
+						width="80">
+						<f:facet name="header">
+							<h:outputText value="BET SOGEI" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.MSogei.bet}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.m600.bet}" id="bet_600"
+						styleClass="cella" style="#{matcherLocation.colorDiffBet}"
+						width="80">
+						<f:facet name="header">
+							<h:outputText value="BET 600" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.m600.bet}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.mSogei.win}" id="win_sogei"
+						styleClass="cella" style="#{matcherLocation.colorDiffWin}"
+						width="80">
+						<f:facet name="header">
+							<h:outputText value="WIN SOGEI" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.MSogei.win}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.m600.win}" id="win_600"
+						styleClass="cella" style="#{matcherLocation.colorDiffWin}"
+						width="80">
+						<f:facet name="header">
+							<h:outputText value="WIN 600" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.m600.win}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.mSogei.gamesPlayed}"
+						id="gamesPlayed_sogei" styleClass="cella"
+						style="#{matcherLocation.colorDiffGamesPlayed}" width="80">
+						<f:facet name="header">
+							<h:outputText value="G. PLAYED SOGEI" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.MSogei.gamesPlayed}" />
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.m600.gamesPlayed}"
+						id="gamesPlayed_600" styleClass="cella"
+						style="#{matcherLocation.colorDiffGamesPlayed}" width="80">
+						<f:facet name="header">
+							<h:outputText value="G. PLAYED 600" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.m600.gamesPlayed}" />
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.mSogei.totalIn}"
+						id="totalIn_sogei" styleClass="cella"
+						style="#{matcherLocation.colorDiffTotalIn}" width="80">
+						<f:facet name="header">
+							<h:outputText value="TOTAL IN SOGEI" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.MSogei.totalIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.m600.totalIn}" id="totalIn_600"
+						styleClass="cella" style="#{matcherLocation.colorDiffTotalIn}"
+						width="80">
+						<f:facet name="header">
+							<h:outputText value="TOTAL IN 600" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.m600.totalIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.MSogei.totalOut}"
+						id="totalOut_sogei" styleClass="cella"
+						style="#{matcherLocation.colorDiffTotalOut}" width="80">
+						<f:facet name="header">
+							<h:outputText value="TOTAL OUT SOGEI" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.MSogei.totalOut}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{matcherLocation.m600.totalOut}"
+						id="totalOut_600" styleClass="cella"
+						style="#{matcherLocation.colorDiffTotalOut}" width="80">
+						<f:facet name="header">
+							<h:outputText value="TOTAL OUT 600" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{matcherLocation.m600.totalOut}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+
+					<p:column id="million_img"
+						rendered="#{!reportBean.modExcludeMillionVlt}" width="50" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Milionaria" />
+						</f:facet>
+						<p:commandButton id="submit" icon="ui-icon-milionarie"
+							rendered="#{matcherLocation.MSogei.milionarie}"
+							onclick="millionDialog.show();" update=":form-dialog:display"
+							styleClass="center-data">
+							<f:setPropertyActionListener value="#{matcherLocation}"
+								target="#{tableBeanMatcherLocation.selectedObj}" />
+						</p:commandButton>
+					</p:column>
+
+
+
+					<f:facet name="footer">
+						<div class="footer-table">
+							<p:panel id="footer" styleClass="footer">
+								<h:outputText value="TOTALI DIFFERENZE: dal  "
+									style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataS}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText value=" al  " style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataE}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+
+								<h:outputText value=" (-SOGEI +600)  " style="color:#1484E6;" />
+								<h:outputText value=" - BET:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanMatcherLocation.totBet}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - WIN:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanMatcherLocation.totWin}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - GAMES PLAYED:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanMatcherLocation.totGamesPlayed}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - TOTAL IN:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanMatcherLocation.totTotalIn}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - TOTAL OUT:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanMatcherLocation.totTotalOut}"
+									style="color:white;" styleClass="cella">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+							</p:panel>
+						</div>
+					</f:facet>
+
+				</p:dataTable>
+			</h:form>
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+</html>

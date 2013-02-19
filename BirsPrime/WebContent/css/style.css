@@ -1,0 +1,579 @@
+* {
+	margin: 0;
+	padding: 0px;
+}
+
+.ui-widget {
+	font-size: 12px;
+}
+
+.ui-datepicker-calendar {
+	background-color: white;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 100%;
+	color: black;
+	font-size: 9px;
+	font-weight: normal;
+	background: white !important;
+}
+
+.location_column .ui-dt-c {
+	width: 200px;
+}
+
+.comune_column {
+	width: 100px;
+}
+
+.ui-datatable th,.ui-datatable tfoot td {
+	padding: 0px 2px 0px 2px;
+}
+
+.ui-datatable .ui-datatable-footer {
+	padding: 0px;
+}
+
+.ui-datatable .ui-sortable-column div.ui-dt-c {
+	text-align: center;
+}
+
+.ui-widget-overlay {
+	background: white !important;
+}
+
+.cella {
+	text-align: right !important;
+}
+
+.cella-dettagli {
+	text-align: right !important;
+	float: right !important;
+}
+
+.head {
+	color: white;
+	text-align: center;
+}
+
+table {
+	font-size: 11px;
+}
+
+body {
+	overflow: hidden;
+	background: url('../images/imageHeaderTop.png') no-repeat;
+	margin: 0px;
+}
+
+.chart-detail-region {
+	position: relative;
+	top: -600px;
+	right: -600px;
+}
+
+.region-detail-panel {
+	height: 100%
+}
+
+.chart-region-datail {
+	height: 100%;
+	width: 900px;
+}
+
+.chart-region {
+	height: 100%;
+	width: 600px;
+}
+
+.menu-text-title {
+	position: relative;
+	top: -18px;
+	float: right;
+	right: 50px;
+	margin-left: 2px;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+.menu-text {
+	position: relative;
+	top: -18px;
+	float: right;
+	right: 50px;
+	margin-left: 2px;
+	font-size: 12px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+.animated .ui-progressbar-value {
+	background-image:
+		url(http://www.primefaces.org/showcase/images/pbar-ani.gif);
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	height: 10px;
+}
+
+.ui-progressbar {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	width: 400px;
+	height: 10px;
+}
+
+.space {
+	height: 90px;
+}
+
+.ui-dialog .ui-dialog-content {
+	padding: 0 !important;
+}
+
+.info-log-text {
+	position: absolute;
+	right: 2%;
+	top: -14px;
+	float: right;
+	font-size: 12px;
+	font-weight: bold;
+	color: white;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+.title-filter {
+	text-align: center;
+	text-align: -moz-center;
+	width: 100%;
+	position: absolute;
+	display: block;
+	top: 28px;
+	color: white;
+	text-shadow: 0 0 2px #e69700;
+	-moz-text-shadow: 0 0 2px #e69700;
+	-webkit-text-shadow: 0 0 2px #e69700;
+}
+
+.report-filter {
+	background-color: #e69700;
+	-webkit-border-bottom-left-radius: 20px;
+	-moz-border-radius-bottomleft: 20px;
+	border-bottom-left-radius: 20px;
+	-webkit-border-bottom-right-radius: 20px;
+	-moz-border-radius-bottomright: 20px;
+	border-bottom-right-radius: 20px;
+	float: right;
+	width: 79%;
+	position: absolute;
+	right: 2%;
+	height: 36px;
+	top: 85px;
+}
+
+.ui-selectmanycheckbox label,.ui-selectoneradio label {
+	margin-top: 2px !important;
+}
+
+.report-chart-div {
+	width: 96%;
+	margin-left: 2%;
+	margin-right: 2%;
+	position: static;
+	top: 190px;
+	height: 500px;
+}
+
+.report-table-million {
+	overflow-x: auto;
+	overflow-y: hidden;
+	width: 100%;
+	box-shadow: 0 0 10px rgba(250, 151, 0, 1);
+	-webkit-box-shadow: 0 0 10px rgba(250, 151, 0, 1);
+	-moz-box-shadow: 0 0 10px rgba(250, 151, 0, 1);
+}
+
+.legenda {
+	position: absolute;
+	right: -8;
+	bottom: -1px;
+	margin-right: 6px;
+}
+
+}
+.ui-button-icon-left .ui-icon .ui-icon-milionarie {
+	background-image: url('../images/million-vlt.png') !important;
+}
+
+.ui-icon-quit {
+	background-image: url('../images/quit.png') !important;
+}
+
+.center-data {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 21px;
+}
+
+.ui-datatable .ui-datatable-data-empty td {
+	text-align: center !important;
+}
+
+.ui-datatable table {
+	white-space: nowrap !important;
+}
+
+.report-table tr {
+	line-height: 20px;
+}
+
+.no-border {
+	border: 0px;
+}
+
+.ui-selectonemenu label.ui-selectonemenu-label {
+	text-align: left;
+}
+
+.footer {
+	background: none !important;
+	border: 0px !important;
+}
+
+#wrapperLogin {
+	position: absolute;
+	margin: auto auto;
+	top: 30%;
+	width: 270px;
+	height: 160px;
+	left: 40%;
+}
+
+.who-is {
+	color: -80px;
+	right: 4%;
+	width: auto;
+	height: 20px;
+	text-align: right;
+	border-top: 1px dashed white;
+	border-bottom: 1px dashed white;
+	border-left: 1px dashed white;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-left-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	border-top-left-radius: 5px;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	padding: 3px;
+	position: absolute;
+	top: -42px;
+	color: white;
+}
+
+html {
+	background: transparent url("../images/bgGradient.png") repeat-x;
+}
+
+.footer-table {
+	background-color: #E69700;
+	height: 23px;
+	text-align: left;
+	text-align: -moz-left;
+	width: 100%;
+	-webkit-border-bottom-left-radius: 20px;
+	-moz-border-radius-bottomleft: 20px;
+	border-bottom-left-radius: 20px;
+	-webkit-border-bottom-right-radius: 20px;
+	-moz-border-radius-bottomright: 20px;
+	border-bottom-right-radius: 20px;
+	font-size: 11px;
+	line-height: 12px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	background: #1484E6 !important;
+	color: white;
+}
+
+.menu-bar {
+	margin-top: 1px;
+	margin-bottom: 2px;
+	border: 0px solid transparent !important;
+	background: transparent;
+	float: right;
+	width: 80%;
+	right: 10px;
+	z-index: 2;
+}
+
+.menu-bar ul li a {
+	border-radius: 0px !important;
+	background-color: rgba(255, 255, 255, 0.8) !important;
+	color: #68b5e3 !important; /* Soft Blue */
+	/*width: 100px !important;*/
+	padding-left: 10px !important;
+	text-align: center !important;
+	padding-right: 10px !important;
+}
+
+.ui-menu-child {
+	background: #68B5E3 !important;
+}
+
+.menu-bar ul li a:hover {
+	background: rgba(255, 255, 255, 1) !important;
+	color: #007fc4 !important; /* Strong Blue */
+}
+
+.ui-menubar .ui-menu-child .ui-menuitem-link {
+	width: 85%;
+}
+
+.ui-menu .ui.menuitem {
+	width: 130px !important;
+}
+
+.menu-bar ul li {
+	margin-right: 3px !important;
+}
+
+.ui-widget .ui-menuitem .ui-state-hover {
+	background: transparent !important;
+	background-color: rgba(255, 255, 255, 1) !important;
+}
+
+.ui-menu .ui-menuitem-link {
+	cursor: pointer;
+}
+
+.ui-menu .ui-menuitem-text {
+	float: left;
+}
+
+.menu-div {
+	display: block;
+	border-top: 1px dashed white;
+	border-bottom: 1px dashed white;
+	height: 38px;
+	padding: 0px;
+	margin: 0px;
+	position: absolute;
+	top: 45px;
+	width: 100%;
+}
+
+.quit-div {
+	position: absolute;
+	top: -42px;
+	right: 2%;
+	z-index: 20;
+}
+
+.quit-button {
+	background: transparent !important;
+}
+
+.logo-media {
+	position: absolute;
+	top: 18px;
+	left: 2%;
+	width: 17%;
+	height: 90px;
+	z-index: 2;
+}
+
+.menu-filler {
+	background: transparent url("../images/menu-gradient.png") no-repeat;
+	height: 27px;
+	position: absolute;
+	top: 6px;
+	right: 2%;
+	float: right;
+	width: 300px;
+	opacity: 0.8;
+	z-index: 1;
+}
+
+.ui-selectoneradio {
+	color: white !important;
+	margin-top: -5px !important;
+}
+
+.white {
+	color: white !important;
+}
+
+.jqplot-title {
+	color: white !important;
+}
+
+.ui-state-default {
+	background: #1484E6 !important;
+}
+
+.ui-state-hover {
+	background: #1484E6 !important;
+}
+
+.ui-menu .ui-menuitem-link .ui-menuitem-icon {
+	background-image:
+		url("/BirsPrime/javax.faces.resource/images/ui-icons_0a82eb_256x240.png.xhtml?ln=primefaces-excite-bike")
+		!important;
+}
+
+.ui-state-active {
+	background: #E69700 !important;
+	border: 1px white solid;
+}
+
+.ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	background: white !important;
+}
+
+.footer-button {
+	margin-left: 46%;
+}
+
+.ui-datatable-odd {
+	background: #BCDCF5;
+}
+
+.sub-menu ul {
+	top: 25px !important;
+}
+
+.sub-menu ul ul {
+	top: 0px !important;
+}
+
+.ui-datatable th { /*text-align: center !important;*/
+	font-weight: bold !important;
+	padding: 3px !important;
+}
+
+.ui-datatable tfoot td {
+	padding-bottom: 5px !important;
+	padding-right: 0px !important;
+}
+
+.ui-datatable th div.ui-dt-c,.ui-datatable .ui-datatable-data td div.ui-dt-c,.ui-datatable .ui-datatable-data-empty td div.ui-dt-c,.ui-datatable tfoot td div.ui-dt-c
+	{
+	overflow: hidden !important;
+	padding: 0 3px !important;
+}
+
+.ui-datatable .ui-datatable-header {
+	padding: 0 10px !important;
+}
+
+.ui-datatable th,.ui-datatable tfoot td {
+	margin: 0;
+	overflow: hidden;
+	padding: 0px;
+	/*text-align: center;*/
+	white-space: nowrap;
+}
+
+.ui-datatable .ui-datatable-data td,.ui-datatable .ui-datatable-data-empty td
+	{
+	padding: 0px 3px !important;
+	/*text-align: center !important;*/
+}
+
+tfoot td {
+	text-align: right !important;
+	width: 500px !important;
+}
+
+.ui-datatable .ui-paginator,.ui-datatable .ui-paginator {
+	position: fixed !important;
+	vertical-align: left !important;
+	text-align: left !important;
+	top: 104px;
+	width: 200px;
+}
+
+.ui-layout-unit {
+	background: transparent !important;
+	border: none !important;
+}
+
+.layoutUnit-north {
+	height: 140px !important;
+	overflow-y: hidden;
+}
+
+.layoutUnit-center {
+	top: 130px !important;
+	width: 96% !important;
+	margin-left: 2% !important;
+	margin-right: 2% !important;
+}
+
+.layoutUnit-south {
+	position: absolute;
+	top: -6px;
+}
+
+.ui-layout-unit .ui-layout-unit-content {
+	background: transparent;
+	overflow: hidden;
+}
+
+.ui-widget-header {
+	background: transparent !important;
+	border: none !important;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-header-box thead {
+	float: left !important;
+	padding-right: 40px !important;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-footer-box {
+	float: center !important;
+	padding-right: 0px !important;
+}
+
+.ui-paginator .ui-paginator-page,.ui-paginator .ui-paginator-pages,.ui-paginator .ui-paginator-next,.ui-paginator .ui-paginator-last,.ui-paginator .ui-paginator-first,.ui-paginator .ui-paginator-prev,.ui-paginator .ui-paginator-current
+	{
+	padding: 0px 2px 0px 2px !important;
+	height: 15px;
+	font-size: 10px;
+}
+
+.ui-datatable-scrollable-body {
+	background: rgba(255, 255, 255, 0.4);
+}
+
+.ui-radiobutton .ui-radiobutton-box {
+	width: 12px !important;
+	height: 12px !important;
+	line-height: 12px !important;
+}
+
+.ui-radiobutton-icon {
+	margin-left: -1px;
+	margin-top: -1px;
+}
+
+.jqplot-xaxis-tick {
+	-webkit-transform: rotate(75deg);
+	-moz-transform: rotate(75deg);
+	-o-transform: rotate(75deg);
+	writing-mode: lr-tb;
+}
+
+.ui-paginator-jtp-select{
+	position: relative;
+	top:2px;
+	width: 50px;
+}
