@@ -1,0 +1,272 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"
+		media="screen" />
+	<meta http-equiv="refresh"
+		content="#{session.maxInactiveInterval};url=million-vlt.xhtml?faces-redirect=true" />
+</h:head>
+<h:body style="margin:0px;">
+	<div class="space"></div>
+	<h:form id="form-dialog">
+		<p:dialog id="modalDialog" visible="false" widgetVar="dialogModal"
+			modal="true" closable="false" draggable="false" resizable="false">
+			<p:ajaxStatus onstart="dialogModal.show()"
+				oncomplete="dialogModal.hide()" />
+			<p:graphicImage value="../../images/loading.gif" />
+		</p:dialog>
+	</h:form>
+	<ui:include src="../common/menu.xhtml" />
+	<p:layout fullPage="true">
+		<p:ajax event="resize" update=":form-table:probMillionVltReportTable" />
+		<p:layoutUnit position="north" styleClass="layoutUnit-north">
+
+			<h:form id="form-filter">
+
+				<p:growl id="messages" showDetail="true" autoUpdate="true" />
+				<h:panelGroup>
+					<div class="report-filter">
+						<h:panelGrid columns="6" id="report">
+							<h:outputText value="del" styleClass="white"/>
+							<p:calendar id="dateStart" effect="slideDown" size="12"
+								navigator="true" lang="it" value="#{reportBean.dataM}"
+								pattern="dd/MM/yyyy" mindate="01/09/2010"
+								maxdate="#{reportBean.oggi}">
+								<p:ajax event="dateSelect" update="buttonFilterData" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:calendar>
+
+							<p:commandButton id="buttonFilterData" value="OK"
+								actionListener="#{reportBean.filterMillionVlt}"
+								onclick="dialogModal.show();"
+								update=":form-table:probMillionVltReportTable,:form-table:realMillionVltReportTable" />
+   
+#{tableBeanMatcherLocation.excelExporter.setColumnCut('5')}
+#{tableBeanProbMillionVlt.excelExporter.setNotNumericColumns('1|2|3|4|5')}
+		<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+								<p:graphicImage value="../../images/excel.png" />
+								<p:dataExporter type="xls" target=":form-table:probMillionVltReportTable"
+									fileName="Million_Vlt_Export_#{reportBean.dataMtoString}"
+									postProcessor="#{tableBeanProbMillionVlt.excelExporter.postProcessXLS}" />
+							</h:commandLink>
+							<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+								<p:graphicImage value="../../images/csv.png" />
+								<p:dataExporter type="csv" target=":form-table:probMillionVltReportTable"
+									fileName="Million_Vlt_Export_#{reportBean.dataM}" />
+							</h:commandLink>
+
+						</h:panelGrid>
+
+					</div>
+
+
+					<h:panelGrid columns="1" styleClass="title-filter">
+						<h:outputText value="PROBABILI e REALI VLT MILIONARIE"
+							style="font-style: bold;font-weight: bold;" id="title-prob" />
+					</h:panelGrid>
+
+				</h:panelGroup>
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" styleClass="layoutUnit-center">
+
+			<h:form id="form-table">
+
+
+				<p:dataTable var="probMillionVlt"
+					value="#{tableBeanProbMillionVlt.tableList}"
+					id="probMillionVltReportTable"
+					emptyMessage="Nessuna Probabile Vlt Milionaria"
+					scrollable="true" resizableColumns="true" scrollHeight="250" style="width:100%">
+
+					<p:column sortBy="#{probMillionVlt.AAMS_LOCATION_ID}"
+						filterBy="#{probMillionVlt.AAMS_LOCATION_ID}"
+						filterMatchMode="contains" id="aams_location_code" width="200">
+						<f:facet name="header">
+							<h:outputText value="LOC CODE" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.AAMS_LOCATION_ID}" />
+					</p:column>
+
+					<p:column sortBy="#{probMillionVlt.LOCATION_NAME}"
+						filterBy="#{probMillionVlt.LOCATION_NAME}"
+						filterMatchMode="contains" id="aams_location_name"
+						width="300" >
+						<f:facet name="header">
+							<h:outputText value="LOC NAME" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.LOCATION_NAME}" />
+					</p:column>
+
+					<p:column sortBy="#{probMillionVlt.AAMS_VLT_ID}"
+						filterBy="#{probMillionVlt.AAMS_VLT_ID}"
+						filterMatchMode="contains" id="aams_vlt_id" width="200">
+						<f:facet name="header">
+							<h:outputText value="VLT ID" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.AAMS_VLT_ID}" />
+					</p:column>
+
+					<p:column sortBy="#{probMillionVlt.GS_VLT_ID}"
+						filterBy="#{probMillionVlt.GS_VLT_ID}" filterMatchMode="contains"
+						id="gs_vlt_id" width="100">
+						<f:facet name="header">
+							<h:outputText value="GS VLT ID" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.GS_VLT_ID}" />
+					</p:column>
+
+					<p:column sortBy="#{probMillionVlt.PERC_MAX_BET}"
+						id="perc_max_bet_vlt"
+						style="background-color:#{probMillionVlt.COLOR_PROB};font-weight:bold;" width="100">
+						<f:facet name="header">
+							<h:outputText value="PERC MAX BET VLT" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.PERC_MAX_BET}%" />
+					</p:column>
+
+
+					<p:column sortBy="#{probMillionVlt.MAX_BET_VLT}"
+						id="max_bet_vlt_id" width="100">
+						<f:facet name="header">
+							<h:outputText value="MAX BET VLT" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.MAX_BET_VLT}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{probMillionVlt.MEDIA_BET_VLT}"
+						id="media_bet_vlt" width="100">
+						<f:facet name="header">
+							<h:outputText value="MEDIA BET VLT" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.MEDIA_BET_VLT}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+
+
+					<p:column sortBy="#{probMillionVlt.MEDIA_7GG}"
+						id="media_bet_vlt_id_7gg" width="100">
+						<f:facet name="header">
+							<h:outputText value="MEDIA BET VLT 7GG" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.MEDIA_7GG}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{probMillionVlt.MEDIA_30GG}"
+						id="media_bet_vlt_id_30gg" width="100">
+						<f:facet name="header">
+							<h:outputText value="MEDIA BET VLT 30GG" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.MEDIA_30GG}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+
+					<p:column sortBy="#{probMillionVlt.TOTAL_BET_SALA}"
+						id="total_bet_sala" width="120">
+						<f:facet name="header">
+							<h:outputText value="TOTAL BET SALA" />
+						</f:facet>
+						<h:outputText value="#{probMillionVlt.TOTAL_BET_SALA}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+
+
+				<p:dataTable var="realMillionVlt"
+					value="#{tableBeanRealMillionVlt.tableList}"
+					id="realMillionVltReportTable"
+					emptyMessage="Nessuna Reale Vlt Milionaria"
+					styleClass="report-table-million" scrollable="true" scrollHeight="250" resizableColumns="true" style="width:100%">
+
+					<p:column sortBy="#{realMillionVlt.aams_location_id}"
+						filterBy="#{realMillionVlt.aams_location_id}"
+						filterMatchMode="contains" width="300">
+						<f:facet name="header">
+							<h:outputText value="LOC CODE" />
+						</f:facet>
+						<h:outputText value="#{realMillionVlt.aams_location_id}" />
+					</p:column>
+
+					<p:column sortBy="#{realMillionVlt.location_name}"
+						filterBy="#{realMillionVlt.location_name}"
+						filterMatchMode="contains" width="300">
+						<f:facet name="header">
+							<h:outputText value="LOC NAME" />
+						</f:facet>
+						<h:outputText value="#{realMillionVlt.location_name}" />
+					</p:column>
+
+					<p:column sortBy="#{realMillionVlt.aams_vlt_id}"
+						filterBy="#{realMillionVlt.aams_vlt_id}"
+						filterMatchMode="contains" width="200">
+						<f:facet name="header">
+							<h:outputText value="VLT ID" />
+						</f:facet>
+						<h:outputText value="#{realMillionVlt.aams_vlt_id}" />
+					</p:column>
+
+					<p:column sortBy="#{realMillionVlt.bet}" id="bet" width="180" >
+						<f:facet name="header"> 
+							<h:outputText value="BET" />
+						</f:facet>
+						<h:outputText value="#{realMillionVlt.bet}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{realMillionVlt.win}" id="win" width="180" >
+						<f:facet name="header">
+							<h:outputText value="WIN" />
+						</f:facet>
+						<h:outputText value="#{realMillionVlt.win}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{realMillionVlt.bet_reale}" id="bet_reale" width="180">
+						<f:facet name="header" >
+							<h:outputText value="BET REALE" />
+						</f:facet>
+						<h:outputText value="#{realMillionVlt.bet_reale}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{realMillionVlt.win_reale}" id="win_reale" width="180">
+						<f:facet name="header">
+							<h:outputText value="WIN REALE" />
+						</f:facet>
+						<h:outputText value="#{realMillionVlt.win_reale}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+
+
+
+
+				</p:dataTable>
+
+			</h:form>
+		</p:layoutUnit>
+
+	</p:layout>
+
+
+
+</h:body>
+</html>

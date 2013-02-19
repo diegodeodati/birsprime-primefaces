@@ -1,0 +1,446 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../../../css/style.css"
+		media="screen" />
+	<meta http-equiv="refresh"
+		content="#{session.maxInactiveInterval};url=general-game.xhtml?faces-redirect=true" />
+</h:head>
+<h:body style="margin:0px;">
+	<div class="space"></div>
+	<h:form id="form-dialog">
+		<p:dialog id="modalDialog" visible="false" widgetVar="dialogModal"
+			modal="true" closable="false" draggable="false" resizable="false">
+			<p:ajaxStatus onstart="dialogModal.show()"
+				oncomplete="dialogModal.hide()" />
+			<p:graphicImage value="../../../images/loading.gif" />
+		</p:dialog>
+
+		<p:dialog header="Dati Contabili" widgetVar="gameDialog"
+			resizable="false" width="300" showEffect="explode"
+			hideEffect="explode">
+			<center>
+				<h:panelGrid id="display" columns="2" cellpadding="4">
+
+					<f:facet name="header">
+						<p:graphicImage
+							value="../../../images/giochi/#{tableBeanLocationGame.selectedObj.sistemagiocodim.game.AAMS_GAME_ID}.jpg" />
+					</f:facet>
+
+					<h:outputText value="Preu:" />
+					<h:outputText value="#{tableBeanLocationGame.selectedObj.preu}"
+						id="preu" styleClass="cella-dettagli">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Aams:" />
+					<h:outputText value="#{tableBeanLocationGame.selectedObj.aams}"
+						id="aams" styleClass="cella-dettagli">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Net Win:" />
+					<h:outputText value="#{tableBeanLocationGame.selectedObj.netWin}"
+						id="netWin" styleClass="cella-dettagli">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="House Win:" />
+					<h:outputText value="#{tableBeanLocationGame.selectedObj.houseWin}"
+						id="houseWin" styleClass="cella-dettagli">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Supplier Profit:" />
+					<h:outputText
+						value="#{tableBeanLocationGame.selectedObj.supplierProfit}"
+						id="supplierProfit" styleClass="cella-dettagli">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Operators Profit:" />
+					<h:outputText
+						value="#{tableBeanLocationGame.selectedObj.operatorsProfit}"
+						id="operatorsProfit" styleClass="cella-dettagli">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Bplus NetProfit:" />
+					<h:outputText
+						value="#{tableBeanLocationGame.selectedObj.bplusNetProfit}"
+						id="bplusNetProfit" styleClass="cella-dettagli">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+				</h:panelGrid>
+			</center>
+		</p:dialog>
+	</h:form>
+	<ui:include src="../../common/menu.xhtml" />
+	<p:layout fullPage="true">
+		<p:ajax event="resize" update=":form-table:locationGameReportTable" />
+		<p:layoutUnit position="north" styleClass="layoutUnit-north">
+			<h:form id="form-filter">
+				<p:growl id="messages" showDetail="true" autoUpdate="true" />
+				<h:panelGroup>
+					<h:panelGrid columns="1" styleClass="title-filter">
+						<h:outputText
+							value="LOCATION GIOCHI GENERALE #{infoPageBean.page_info}"
+							style="font-style: bold;font-weight: bold;" id="title" />
+					</h:panelGrid>
+					<div class="report-filter">
+						<h:panelGrid columns="13" id="report">
+							<h:outputText value="da" styleClass="white" />
+							<p:calendar id="dateStart" effect="slideDown" size="12"
+								navigator="true" lang="it" value="#{reportBean.dataS}"
+								pattern="dd/MM/yyyy" mindate="01/09/2010"
+								maxdate="#{reportBean.oggi}">
+								<p:ajax event="dateSelect" listener="#{reportBean.changeDataS}"
+									update="buttonFilterData" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:calendar>
+							<h:outputText value="a" styleClass="white" />
+							<p:calendar id="dateEnd" effect="slideDown" size="12"
+								navigator="true" lang="it" value="#{reportBean.dataE}"
+								pattern="dd/MM/yyyy" mindate="01/09/2010"
+								maxdate="#{reportBean.oggi}">
+								<p:ajax event="dateSelect" listener="#{reportBean.changeDataE}"
+									update="buttonFilterData" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:calendar>
+							<p:commandButton id="buttonFilterData" value="OK"
+								disabled="#{reportBean.errorDate}"
+								actionListener="#{reportBean.filterDataOnLocationGame}"
+								onclick="dialogModal.show();" oncomplete="tab.filter();"
+								update=":form-table:locationGameReportTable" />
+
+
+							<p:selectOneRadio id="options-day"
+								value="#{reportBean.modSingTotDay}" layout="pageDirection">
+								<p:ajax event="change"
+									listener="#{reportBean.switchSingTotLocationGame}"
+									update=":form-table:locationGameReportTable,title"
+									oncomplete="tab.filter();" />
+								<f:selectItem itemLabel="Singoli Giorni" itemValue="false" />
+								<f:selectItem itemLabel="Totale Giorni" itemValue="true" />
+							</p:selectOneRadio>
+
+							<p:separator style="width:2px;height:20px" />
+							<p:selectOneRadio id="options-loc"
+								value="#{reportBean.modAllOpenLoc}" layout="pageDirection">
+								<p:ajax event="change"
+									listener="#{reportBean.switchOpenCloseLoc('tableBeanLocationGame')}"
+									update=":form-table:locationGameReportTable,title"
+									oncomplete="tab.filter();" />
+								<f:selectItem itemLabel="Tutte Sale" itemValue="false" />
+								<f:selectItem itemLabel="Solo Sale Aperte" itemValue="true" />
+							</p:selectOneRadio>
+							<p:separator style="width:2px;height:20px" />
+							<p:selectOneMenu id="filterBet" value="#{reportBean.betOpt}"
+								styleClass="filter">
+								<f:selectItems value="#{reportBean.contabilityOptions}"
+									var="betOpt" itemValue="#{betOpt}" itemLabel="#{betOpt.label}" />
+								<p:ajax event="change"
+									listener="#{tableBeanLocationGame.refreshTableList}"
+									update=":form-table:locationGameReportTable"
+									oncomplete="tab.filter();" />
+
+							</p:selectOneMenu>
+				
+
+#{tableBeanLocationGame.excelExporter.setColumnCut('7')}
+#{tableBeanLocationGame.excelExporter.setNotNumericColumns('1|2|3|4|5|6|7')}
+		<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+								<p:graphicImage value="../../../images/excel.png"
+									styleClass="no-border" />
+								<p:dataExporter type="xls"
+									target=":form-table:locationGameReportTable"
+									fileName="General_Game_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}"
+									excludeColumns="8"
+									postProcessor="#{tableBeanLocationGame.excelExporter.postProcessXLS}" />
+							</h:commandLink>
+							<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+								<p:graphicImage value="../../../images/csv.png"
+									styleClass="no-border" />
+								<p:dataExporter type="csv"
+									target=":form-table:locationGameReportTable"
+									fileName="General_Game_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}"
+									excludeColumns="8" />
+							</h:commandLink>
+							<p:graphicImage value="../../../images/noexcel.png"
+								styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+							<p:graphicImage value="../../../images/nocsv.png"
+								styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+
+
+
+						</h:panelGrid>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" styleClass="layoutUnit-center">
+
+			<h:form id="form-table">
+
+
+				<p:remoteCommand name="updateFooter"
+					update=":form-table:locationGameReportTable:footer,:form-filter"
+					oncomplete="dialogModal.hide()" />
+				<p:dataTable var="meterfactGame"
+					value="#{tableBeanLocationGame.tableList}"
+					rowKey="#{meterfactGame.tempodim.simpleTempodimToString()}-#{meterfactGame.sistemagiocodim.vlt.AAMS_VLT_ID}-#{meterfactGame.sistemagiocodim.game.AAMS_GAME_ID}"
+					scrollable="true" scrollHeight="0"
+					selection="#{tableBeanLocationGame.selectedObj}"
+					filteredValue="#{tableBeanLocationGame.filteredTableList}"
+					widgetVar="tab" selectionMode="single" id="locationGameReportTable"
+					additionalScrollHeight="300" paginator="true" rows="100"
+					paginatorPosition="top" resizableColumns="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {JumpToPageDropdown} {NextPageLink} {LastPageLink}">
+
+
+					<p:ajax event="rowSelect" update=":form-dialog:display"
+						oncomplete="gameDialog.show()" />
+
+					<p:ajax event="filter"
+						listener="#{tableBeanLocationGame.handleFilter}"
+						oncomplete="updateFooter();" />
+
+					<p:column sortBy="#{meterfactGame.tempodim.data}" id="data"
+						rendered="#{!reportBean.modSingTotDay}" width="100">
+						<f:facet name="header">
+							<h:outputText value="DATA" />
+						</f:facet>
+
+						<h:outputText value="#{meterfactGame.tempodim.data}">
+							<f:convertDateTime timeZone="CET" locale="#{languageBean.locale}"
+								pattern="#{languageBean.datePatternSelected}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column
+						sortBy="#{meterfactGame.sistemagiocodim.AAMS_GAMESYSTEM_ID}"
+						filterBy="#{meterfactGame.sistemagiocodim.AAMS_GAMESYSTEM_ID}"
+						filterOptions="#{reportBean.sistemagiocodimOptions}"
+						id="aams_gs_code" width="100">
+						<f:facet name="header">
+							<h:outputText value="GAMESYSTEM" />
+						</f:facet>
+						<h:outputText
+							value="#{meterfactGame.sistemagiocodim.AAMS_GAMESYSTEM_ID}" />
+					</p:column>
+
+					<p:column
+						sortBy="#{meterfactGame.sistemagiocodim.loc.AAMS_LOCATION_ID}"
+						filterBy="#{meterfactGame.sistemagiocodim.loc.AAMS_LOCATION_ID}"
+						filterMatchMode="contains" id="aams_location_code" width="100">
+						<f:facet name="header">
+							<h:outputText value="LOC CODE" />
+						</f:facet>
+						<h:outputText
+							value="#{meterfactGame.sistemagiocodim.loc.AAMS_LOCATION_ID}" />
+					</p:column>
+
+					<p:column
+						sortBy="#{meterfactGame.sistemagiocodim.loc.COMMERCIAL_NAME}"
+						filterBy="#{meterfactGame.sistemagiocodim.loc.COMMERCIAL_NAME}"
+						filterMatchMode="contains" id="aams_location_name"
+						styleClass="location_column" width="100">
+						<f:facet name="header">
+							<h:outputText value="LOC NAME" />
+						</f:facet>
+						<h:outputText
+							value="#{meterfactGame.sistemagiocodim.loc.COMMERCIAL_NAME}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactGame.spaziodim.comune.nome}"
+						filterBy="#{meterfactGame.spaziodim.comune.nome}"
+						filterMatchMode="contains" id="comune" width="100">
+						<f:facet name="header">
+							<h:outputText value="COMUNE" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.spaziodim.comune.nome}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactGame.spaziodim.provincia.sigla}"
+						filterBy="#{meterfactGame.spaziodim.provincia.sigla}"
+						filterMatchMode="contains" id="provincia" width="100">
+						<f:facet name="header">
+							<h:outputText value="PROVINCIA" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.spaziodim.provincia.sigla}" />
+					</p:column>
+
+					<p:column
+						sortBy="#{meterfactGame.sistemagiocodim.game.AAMS_GAME_ID}"
+						filterBy="#{meterfactGame.sistemagiocodim.game.AAMS_GAME_ID}"
+						filterMatchMode="contains" id="aams_game_code" width="100">
+						<f:facet name="header">
+							<h:outputText value="GAME CODE" />
+						</f:facet>
+						<h:outputText
+							value="#{meterfactGame.sistemagiocodim.game.AAMS_GAME_ID}"></h:outputText>
+					</p:column>
+
+					<p:column id="gs_game_code_img" style="width:70px;"
+						exportable="false" width="100">
+						<f:facet name="header">
+							<h:outputText value="GAME" />
+						</f:facet>
+						<p:graphicImage
+							value="../../../images/giochi/#{meterfactGame.sistemagiocodim.game.AAMS_GAME_ID}.jpg"
+							style="display: block;margin-left: auto;margin-right: auto;height:21px;" />
+					</p:column>
+
+
+					<p:column sortBy="#{meterfactGame.bet}" id="bet" styleClass="cella"
+						width="80">
+						<f:facet name="header">
+							<h:outputText value="BET" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.bet}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactGame.win}" id="win" styleClass="cella"
+						width="80">
+						<f:facet name="header">
+							<h:outputText value="WIN" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.win}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactGame.gamesPlayed}" id="gamesPlayed"
+						styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="GAMES PLAYED" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.gamesPlayed}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactGame.jackpotWins}" id="jackpotWins"
+						styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="JK WINS" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.jackpotWins}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactGame.jackpotContribution}"
+						id="jackpotContribution" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="JK CONTRIBUTION" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.jackpotContribution}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column id="tab_preu" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="PREU" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.preu}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_aams" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="AAMS" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.aams}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_netwin" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="NET WIN" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.netWin}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_housewin" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="HOUSE WIN" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.houseWin}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_supplier_profit" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="Supplier Profit" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_operator_profit" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="Operator Profit" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_bplus_netprofit" styleClass="cella" width="80">
+						<f:facet name="header">
+							<h:outputText value="Bplus NetProfit" />
+						</f:facet>
+						<h:outputText value="#{meterfactGame.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<f:facet name="footer">
+						<div class="footer-table">
+							<p:panel id="footer" styleClass="footer">
+								<h:outputText value="TOTALI: dal  " style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataS}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText value=" al  " style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataE}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+
+
+								<h:outputText value=" - BET:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocationGame.totBet}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+								<h:outputText value=" - WIN:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocationGame.totWin}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+								<h:outputText value=" - GAMES PLAYED:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanLocationGame.totGamesPlayed}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+							</p:panel>
+						</div>
+					</f:facet>
+
+				</p:dataTable>
+
+			</h:form>
+		</p:layoutUnit>
+
+	</p:layout>
+
+
+
+</h:body>
+</html>

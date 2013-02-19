@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13287070729612" configfile="/BirsPrime/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="7090" id="pf13312867414690" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13312867414691 pf13312867414692 pf13327812661510 pf13327812661511 pf13327813777255 pf13328532600790 pf13328633000540 pf13328633000541 pf13329478419080 pf13329478923332 pf13329478923333 pf13329478923334 pf13329478923335 pf13347437449640 pf13347437449641 pf13348330510550 pf13352631162680 pf13364013462110 pf13364014012112 pf13364014012113 pf13364014012114 pf13364014012115 pf13378667649970 pf13433176928070 pf13472704360730 pf13475524721800 pf13488430494900 pf13488430494901 pf13488430494902 pf13505495222630 pf13510955058290 pf13510955058291 pf13510955058292 pf13529729266440 pf13529729266441 pf13529729266442 pf13529729266443" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="338" y="178" id="pf13312867414693" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf13312867414691" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/general-location.xhtml" x="338" y="562" id="pf13312867414694" referenceLink="//@navigationRule.0/@navigationCase.10/@toViewId|" inlinks="pf13312867414692" path="/pages/report/general/general-location.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/general/general-vlt.xhtml" x="338" y="946" id="pf13327812661513" referenceLink="//@navigationRule.0/@navigationCase.11/@toViewId|" inlinks="pf13327812661510" path="/pages/report/general/general-vlt.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/general/general-region.xhtml" x="338" y="1330" id="pf13327812661514" referenceLink="//@navigationRule.0/@navigationCase.13/@toViewId|" inlinks="pf13327812661511" path="/pages/report/general/general-region.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/general/general-game.xhtml" x="338" y="1714" id="pf13327813777256" referenceLink="//@navigationRule.0/@navigationCase.14/@toViewId|" inlinks="pf13327813777255" path="/pages/report/general/general-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/novomatic/novomatic-game.xhtml" x="338" y="2098" id="pf13328532600801" referenceLink="//@navigationRule.0/@navigationCase.19/@toViewId|" inlinks="pf13328532600790" path="/pages/report/novomatic/novomatic-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/novomatic/novomatic-vlt.xhtml" x="338" y="2482" id="pf13328633000543" referenceLink="//@navigationRule.0/@navigationCase.21/@toViewId|" inlinks="pf13328633000540" path="/pages/report/novomatic/novomatic-vlt.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/novomatic/novomatic-location.xhtml" x="338" y="2866" id="pf13328633000544" referenceLink="//@navigationRule.0/@navigationCase.22/@toViewId|" inlinks="pf13328633000541" path="/pages/report/novomatic/novomatic-location.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/chart/chart-region.xhtml" x="338" y="3250" id="pf13329478419091" referenceLink="//@navigationRule.0/@navigationCase.30/@toViewId|" inlinks="pf13329478419080" path="/pages/chart/chart-region.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/chart/chart-sysgioco.xhtml" x="338" y="3634" id="pf13329478923336" referenceLink="//@navigationRule.0/@navigationCase.29/@toViewId|" inlinks="pf13329478923332" path="/pages/chart/chart-sysgioco.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/chart/chart-location.xhtml" x="338" y="4018" id="pf13329478923337" referenceLink="//@navigationRule.0/@navigationCase.31/@toViewId|" inlinks="pf13329478923333" path="/pages/chart/chart-location.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/chart/chart-vlt.xhtml" x="338" y="4402" id="pf13329478923338" referenceLink="//@navigationRule.0/@navigationCase.32/@toViewId|" inlinks="pf13329478923334" path="/pages/chart/chart-vlt.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/chart/chart-game.xhtml" x="338" y="4786" id="pf13329478923339" referenceLink="//@navigationRule.0/@navigationCase.33/@toViewId|" inlinks="pf13329478923335" path="/pages/chart/chart-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/matcher-sogei-600-location.xhtml" x="338" y="5170" id="pf13347437449652" referenceLink="//@navigationRule.0/@navigationCase.5/@toViewId|" inlinks="pf13347437449640" path="/pages/report/matcher-sogei-600-location.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/matcher-sogei-600-vlt.xhtml" x="338" y="5554" id="pf13347437449653" referenceLink="//@navigationRule.0/@navigationCase.6/@toViewId|" inlinks="pf13347437449641" path="/pages/report/matcher-sogei-600-vlt.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/user.xhtml" x="338" y="5938" id="pf13348330510551" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf13348330510550" path="/pages/report/user.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/million-vlt.xhtml" x="338" y="6322" id="pf13352631162691" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf13352631162680" path="/pages/report/million-vlt.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/inspired/inspired-location.xhtml" x="338" y="6706" id="pf13364013462121" referenceLink="//@navigationRule.0/@navigationCase.27/@toViewId|" inlinks="pf13364013462110" path="/pages/report/inspired/inspired-location.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/novomatic/novomatic-region.xhtml" x="338" y="7090" id="pf13364014012126" referenceLink="//@navigationRule.0/@navigationCase.23/@toViewId|" inlinks="pf13364014012112" path="/pages/report/novomatic/novomatic-region.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/inspired/inspired-region.xhtml" x="338" y="7474" id="pf13364014012127" referenceLink="//@navigationRule.0/@navigationCase.28/@toViewId|" inlinks="pf13364014012113" path="/pages/report/inspired/inspired-region.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/inspired/inspired-vlt.xhtml" x="338" y="7858" id="pf13364014012128" referenceLink="//@navigationRule.0/@navigationCase.26/@toViewId|" inlinks="pf13364014012114" path="/pages/report/inspired/inspired-vlt.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/inspired/inspired-game.xhtml" x="338" y="8242" id="pf13364014012129" referenceLink="//@navigationRule.0/@navigationCase.25/@toViewId|" inlinks="pf13364014012115" path="/pages/report/inspired/inspired-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/upload-img-game.xhtml" x="338" y="8626" id="pf13378667649981" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf13378667649970" path="/pages/report/upload-img-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/vlt-model.xhtml" x="338" y="9010" id="pf13433176928071" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf13433176928070" path="/pages/report/vlt-model.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/chart/chart-game-location.xhtml" x="338" y="9778" id="pf13472704360751" referenceLink="//@navigationRule.0/@navigationCase.34/@toViewId|" inlinks="pf13472704360730" path="/pages/chart/chart-game-location.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/general/general-location-game.xhtml" x="338" y="10162" id="pf13475524721821" referenceLink="//@navigationRule.0/@navigationCase.18/@toViewId|" inlinks="pf13475524721800" path="/pages/report/general/general-location-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/novomatic/novomatic-location-game.xhtml" x="338" y="10546" id="pf13488430494923" referenceLink="//@navigationRule.0/@navigationCase.20/@toViewId|" inlinks="pf13488430494900" path="/pages/report/novomatic/novomatic-location-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/inspired/inspired-location-game.xhtml" x="338" y="10930" id="pf13488430494924" referenceLink="//@navigationRule.0/@navigationCase.24/@toViewId|" inlinks="pf13488430494901" path="/pages/report/inspired/inspired-location-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/general/general-vlt-dismissed.xhtml" x="338" y="11314" id="pf13488430494925" referenceLink="//@navigationRule.0/@navigationCase.12/@toViewId|" inlinks="pf13488430494902" path="/pages/report/general/general-vlt-dismissed.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/general/general-location-hour.xhtml" x="338" y="12082" id="pf13505495222651" referenceLink="//@navigationRule.0/@navigationCase.7/@toViewId|" inlinks="pf13505495222630" path="/pages/report/general/general-location-hour.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/novomatic/novomatic-location-hour.xhtml" x="338" y="12466" id="pf13510955058313" referenceLink="//@navigationRule.0/@navigationCase.8/@toViewId|" inlinks="pf13510955058290" path="/pages/report/novomatic/novomatic-location-hour.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/inspired/inspired-location-hour.xhtml" x="338" y="12850" id="pf13510955058314" referenceLink="//@navigationRule.0/@navigationCase.9/@toViewId|" inlinks="pf13510955058291" path="/pages/report/inspired/inspired-location-hour.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/general/general-grouped-game.xhtml" x="338" y="13234" id="pf13510955058315" referenceLink="//@navigationRule.0/@navigationCase.15/@toViewId|" inlinks="pf13510955058292" path="/pages/report/general/general-grouped-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/inspired/inspired-grouped-game.xhtml" x="338" y="13618" id="pf13529729266464" referenceLink="//@navigationRule.0/@navigationCase.16/@toViewId|" inlinks="pf13529729266440" path="/pages/report/inspired/inspired-grouped-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/novomatic/novomatic-grouped-game.xhtml" x="338" y="14002" id="pf13529729266465" referenceLink="//@navigationRule.0/@navigationCase.17/@toViewId|" inlinks="pf13529729266441" path="/pages/report/novomatic/novomatic-grouped-game.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/business-intelligence.xhtml" id="pf13529729266466" referenceLink="//@navigationRule.0/@navigationCase.36/@toViewId|" inlinks="pf13529729266442" path="/pages/report/business-intelligence.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/report/reimport.xhtml" id="pf13529729266467" referenceLink="//@navigationRule.0/@navigationCase.35/@toViewId|" inlinks="pf13529729266443" path="/pages/report/reimport.xhtml"/>
+  <links id="pf13312867414691" target="pf13312867414693" source="pf13312867414690" outcome="index" redirect="true"/>
+  <links id="pf13312867414692" target="pf13312867414694" source="pf13312867414690" outcome="general-location" redirect="true"/>
+  <links id="pf13327812661510" target="pf13327812661513" source="pf13312867414690" outcome="general-vlt" redirect="true"/>
+  <links id="pf13327812661511" target="pf13327812661514" source="pf13312867414690" outcome="general-region" redirect="true"/>
+  <links id="pf13327813777255" target="pf13327813777256" source="pf13312867414690" outcome="general-game" redirect="true"/>
+  <links id="pf13328532600790" target="pf13328532600801" source="pf13312867414690" outcome="novomatic-game" redirect="true"/>
+  <links id="pf13328633000540" target="pf13328633000543" source="pf13312867414690" outcome="novomatic-vlt" redirect="true"/>
+  <links id="pf13328633000541" target="pf13328633000544" source="pf13312867414690" outcome="novomatic-location" redirect="true"/>
+  <links id="pf13329478419080" target="pf13329478419091" source="pf13312867414690" outcome="chart-region" redirect="true"/>
+  <links id="pf13329478923332" target="pf13329478923336" source="pf13312867414690" outcome="chart-sysgioco" redirect="true"/>
+  <links id="pf13329478923333" target="pf13329478923337" source="pf13312867414690" outcome="chart-location" redirect="true"/>
+  <links id="pf13329478923334" target="pf13329478923338" source="pf13312867414690" outcome="chart-vlt" redirect="true"/>
+  <links id="pf13329478923335" target="pf13329478923339" source="pf13312867414690" outcome="chart-game" redirect="true"/>
+  <links id="pf13347437449640" target="pf13347437449652" source="pf13312867414690" outcome="matcher-location" redirect="true"/>
+  <links id="pf13347437449641" target="pf13347437449653" source="pf13312867414690" outcome="matcher-vlt" redirect="true"/>
+  <links id="pf13348330510550" target="pf13348330510551" source="pf13312867414690" outcome="user" redirect="true"/>
+  <links id="pf13352631162680" target="pf13352631162691" source="pf13312867414690" outcome="million-vlt" redirect="true"/>
+  <links id="pf13364013462110" target="pf13364013462121" source="pf13312867414690" outcome="inspired-location" redirect="true"/>
+  <links id="pf13364014012112" target="pf13364014012126" source="pf13312867414690" outcome="novomatic-region" redirect="true"/>
+  <links id="pf13364014012113" target="pf13364014012127" source="pf13312867414690" outcome="inspired-region" redirect="true"/>
+  <links id="pf13364014012114" target="pf13364014012128" source="pf13312867414690" outcome="inspired-vlt" redirect="true"/>
+  <links id="pf13364014012115" target="pf13364014012129" source="pf13312867414690" outcome="inspired-game" redirect="true"/>
+  <links id="pf13378667649970" target="pf13378667649981" source="pf13312867414690" outcome="upload-img-game" redirect="true"/>
+  <links id="pf13433176928070" target="pf13433176928071" source="pf13312867414690" outcome="vlt-model" redirect="true"/>
+  <links id="pf13472704360730" target="pf13472704360751" source="pf13312867414690" outcome="chart-game-location" redirect="true"/>
+  <links id="pf13475524721800" target="pf13475524721821" source="pf13312867414690" outcome="general-location-game" redirect="true"/>
+  <links id="pf13488430494900" target="pf13488430494923" source="pf13312867414690" outcome="novomatic-location-game" redirect="true"/>
+  <links id="pf13488430494901" target="pf13488430494924" source="pf13312867414690" outcome="inspired-location-game" redirect="true"/>
+  <links id="pf13488430494902" target="pf13488430494925" source="pf13312867414690" outcome="general-vlt-dismissed" redirect="true"/>
+  <links id="pf13505495222630" target="pf13505495222651" source="pf13312867414690" outcome="general-location-hour" redirect="true"/>
+  <links id="pf13510955058290" target="pf13510955058313" source="pf13312867414690" outcome="novomatic-location-hour" redirect="true"/>
+  <links id="pf13510955058291" target="pf13510955058314" source="pf13312867414690" outcome="inspired-location-hour" redirect="true"/>
+  <links id="pf13510955058292" target="pf13510955058315" source="pf13312867414690" outcome="general-grouped-game" redirect="true"/>
+  <links id="pf13529729266440" target="pf13529729266464" source="pf13312867414690" outcome="inspired-grouped-game" redirect="true"/>
+  <links id="pf13529729266441" target="pf13529729266465" source="pf13312867414690" outcome="novomatic-grouped-game" redirect="true"/>
+  <links id="pf13529729266442" target="pf13529729266466" source="pf13312867414690" outcome="business-intelligence" redirect="true"/>
+  <links id="pf13529729266443" target="pf13529729266467" source="pf13312867414690" outcome="reimport" redirect="true"/>
+</pageflow:Pageflow>

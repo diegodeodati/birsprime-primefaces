@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"
+		media="screen" />
+	<meta http-equiv="refresh"
+		content="#{session.maxInactiveInterval};url=upload-img-game.xhtml?faces-redirect=true" />
+</h:head>
+<f:view locale="#{languageBean.locale}" />
+<h:body style="margin:0px;">
+	<div class="space"></div>
+	<h:form id="form-dialog">
+		<p:dialog id="modalDialog" visible="false" widgetVar="dialogModal"
+			modal="true" closable="false" draggable="false" resizable="false">
+			<p:ajaxStatus onstart="dialogModal.show()"
+				oncomplete="dialogModal.hide()" />
+			<p:graphicImage value="../../images/loading.gif" />
+		</p:dialog>
+	</h:form>
+	<ui:include src="../common/menu.xhtml" />
+	<p:layout fullPage="true">
+		<p:ajax event="resize" update=":form-table:fileUploader" />
+		<p:layoutUnit position="north" styleClass="layoutUnit-north">
+			<div class="report-filter" />
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" styleClass="layoutUnit-center">
+
+			<h:form id="form-table">
+
+				<p:growl id="messages" showDetail="true" />
+
+				<p:fileUpload
+					fileUploadListener="#{fileUploadController.handleFileUpload}"
+					mode="advanced" update="messages" sizeLimit="100000"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/" id="fileUploader"/>
+
+			</h:form>
+		</p:layoutUnit>
+
+	</p:layout>
+
+</h:body>
+</html>

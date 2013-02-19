@@ -1,0 +1,430 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../../../css/style.css"
+		media="screen" />
+	<meta http-equiv="refresh"
+		content="#{session.maxInactiveInterval};url=novomatic-region.xhtml?faces-redirect=true" />
+</h:head>
+<h:body style="margin:0px;">
+	<div class="space"></div>
+	<ui:include src="../../common/menu.xhtml" />
+	<h:form id="form">
+		<p:growl id="messages" showDetail="true" autoUpdate="true" />
+		<h:panelGroup>
+			<h:panelGrid columns="1" styleClass="title-filter">
+				<h:outputText value="NOVOMATIC REGIONI #{infoPageBean.page_info}"
+					style="font-style: bold;font-weight: bold;" id="title" />
+			</h:panelGrid>
+			<div class="report-filter">
+				<h:panelGrid columns="13" id="report">
+					<h:outputText value="da" styleClass="white"/>
+					<p:calendar id="dateStart" effect="slideDown" size="12"
+						navigator="true" lang="it" value="#{reportBean.dataS}"
+						pattern="dd/MM/yyyy" mindate="01/09/2010"
+						maxdate="#{reportBean.oggi}">
+						<p:ajax event="dateSelect" listener="#{reportBean.changeDataS}"
+							update="buttonFilterData" />
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:calendar>
+					<h:outputText value="a" styleClass="white"/>
+					<p:calendar id="dateEnd" effect="slideDown" size="12"
+						navigator="true" lang="it" value="#{reportBean.dataE}"
+						pattern="dd/MM/yyyy" mindate="01/09/2010"
+						maxdate="#{reportBean.oggi}">
+						<p:ajax event="dateSelect" listener="#{reportBean.changeDataE}"
+							update="buttonFilterData" />
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:calendar>
+					<p:commandButton id="buttonFilterData" value="OK"
+						disabled="#{reportBean.errorDate}"
+						actionListener="#{reportBean.filterDataOnRegionNovomatic}"
+						onclick="dialogModal.show();" oncomplete="tab.filter();"
+						update="regionReportTable,modalDialog" />
+					<p:selectOneRadio id="options-day"
+						value="#{reportBean.modSingTotDay}" >
+						<p:ajax event="change"
+							listener="#{tableBeanRegion.refreshTableList}"
+							update="regionReportTable,title" oncomplete="tab.filter();" />
+						<f:selectItem itemLabel="Singoli Giorni" itemValue="false" />
+						<f:selectItem itemLabel="Totale Giorni" itemValue="true" />
+					</p:selectOneRadio>
+
+					<p:separator style="width:2px;height:20px" />
+					<p:selectOneRadio id="options-loc"
+						value="#{reportBean.modAllOpenLoc}" >
+						<p:ajax event="change"
+							listener="#{tableBeanRegion.refreshTableList}"
+							update="regionReportTable,title" oncomplete="tab.filter();" />
+						<f:selectItem itemLabel="Tutte Sale" itemValue="false" />
+						<f:selectItem itemLabel="Solo Sale Aperte" itemValue="true" />
+					</p:selectOneRadio>
+
+					<p:separator style="width:2px;height:20px" />
+					<p:selectOneMenu id="filterBet" value="#{reportBean.betOpt}"
+						styleClass="filter">
+						<f:selectItems value="#{reportBean.contabilityOptions}"
+							var="betOpt" itemValue="#{betOpt}" itemLabel="#{betOpt.label}" />
+						<p:ajax event="change"
+							listener="#{tableBeanRegion.refreshTableList}"
+							update="regionReportTable" oncomplete="tab.filter();" />
+
+					</p:selectOneMenu>
+
+#{tableBeanRegion.excelExporter.setColumnCut('2')}
+#{tableBeanRegion.excelExporter.setNotNumericColumns('1|2')}
+		<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+						<p:graphicImage value="../../../images/excel.png"
+							styleClass="no-border" />
+						<p:dataExporter type="xls" target="regionReportTable"
+							fileName="Novomatic_Region_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}"
+							postProcessor="#{tableBeanRegion.excelExporter.postProcessXLS}" />
+					</h:commandLink>
+					<h:commandLink rendered="#{!reportBean.tooManyRecords}">
+						<p:graphicImage value="../../../images/csv.png"
+							styleClass="no-border" />
+						<p:dataExporter type="csv" target="regionReportTable"
+							fileName="Novomatic_Region_Export_#{reportBean.dataStoString}_#{reportBean.dataEtoString}" />
+					</h:commandLink>
+					<p:graphicImage value="../../../images/noexcel.png"
+						styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+					<p:graphicImage value="../../../images/nocsv.png"
+						styleClass="no-border" rendered="#{reportBean.tooManyRecords}" />
+
+				</h:panelGrid>
+			</div>
+
+			<p:dialog id="modalDialog" visible="false" widgetVar="dialogModal"
+				modal="true" closable="false" draggable="false" resizable="false">
+				<p:ajaxStatus onstart="dialogModal.show()"
+					oncomplete="dialogModal.hide()" />
+				<p:graphicImage value="../../../images/loading.gif" />
+			</p:dialog>
+			<p:remoteCommand name="updateFooter" update=":form:regionReportTable:footer"
+				oncomplete="dialogModal.hide()"/>
+			<div class="report-table-div">
+				<p:dataTable var="meterfactRegion"
+					value="#{tableBeanRegion.tableList}"
+					rowKey="#{meterfactRegion.tempodim.simpleTempodimToString()}-#{meterfactRegion.spaziodim.regione.idReg}"
+					paginator="true" rows="20"
+					filteredValue="#{tableBeanRegion.filteredTableList}"
+					widgetVar="tab" selection="#{tableBeanRegion.selectedObj}"
+					selectionMode="single" id="regionReportTable"
+					additionalScrollHeight="300" paginator="true" rows="100" paginatorPosition="top" resizableColumns="true">
+
+
+					<p:ajax event="rowSelect" update=":form:display"
+						oncomplete="regDialog.show()" />
+
+
+					<p:ajax event="filter" listener="#{tableBeanRegion.handleFilter}" oncomplete="updateFooter();" />
+
+
+					<p:column sortBy="#{meterfactRegion.tempodim.data}" id="data"
+						rendered="#{!reportBean.modSingTotDay}">
+						<f:facet name="header">
+							<h:outputText value="DATA" />
+						</f:facet>
+
+
+						<h:outputText value="#{meterfactRegion.tempodim.data}">
+							<f:convertDateTime timeZone="CET" locale="#{languageBean.locale}"
+								pattern="#{languageBean.datePatternSelected}" />
+						</h:outputText>
+
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.spaziodim.regione.nome}"
+						filterBy="#{meterfactRegion.spaziodim.regione.nome}"
+						id="region_name">
+						<f:facet name="header">
+							<h:outputText value="REGIONE" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.spaziodim.regione.nome}" />
+					</p:column>
+
+
+
+					<p:column sortBy="#{meterfactRegion.bet}" id="bet"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="BET" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.bet}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.win}" id="win"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="WIN" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.win}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.gamesPlayed}" id="gamesPlayed"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="GAMES PLAYED" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.gamesPlayed}" />
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.totalIn}" id="totalIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TOTAL IN" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.totalIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.totalOut}" id="totalOut"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TOTAL OUT" styleClass="head" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.totalOut}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.ticketIn}" id="ticketIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TICKET IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.ticketIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.ticketOut}" id="ticketOut"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="TICKET OUT" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.ticketOut}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.coinIn}" id="coinIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="COIN IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.coinIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.billIn}" id="billIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="BILL IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.billIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.cardIn}" id="cardIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="CARD IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.cardIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{meterfactRegion.prepaidIn}" id="totalPrepaidIn"
+						styleClass="cella">
+						<f:facet name="header">
+							<h:outputText value="PREPAID IN" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.prepaidIn}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column id="tab_preu">
+						<f:facet name="header">
+							<h:outputText value="PREU" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.preu}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_aams">
+						<f:facet name="header">
+							<h:outputText value="AAMS" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.aams}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_netwin">
+						<f:facet name="header">
+							<h:outputText value="NET WIN" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.netWin}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_housewin">
+						<f:facet name="header">
+							<h:outputText value="HOUSE WIN" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.houseWin}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_supplier_profit">
+						<f:facet name="header">
+							<h:outputText value="Supplier Profit" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_operator_profit">
+						<f:facet name="header">
+							<h:outputText value="Operator Profit" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column id="tab_bplus_netprofit">
+						<f:facet name="header">
+							<h:outputText value="Bplus NetProfit" />
+						</f:facet>
+						<h:outputText value="#{meterfactRegion.supplierProfit}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+
+					<f:facet name="footer">
+						<div class="footer-table">
+							<p:panel id="footer" styleClass="footer">
+								<h:outputText value="TOTALI: dal  " style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataS}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText value=" al  " style="color:#1484E6;" />
+								<h:outputText value="#{reportBean.dataE}" style="color:white;">
+									<f:convertDateTime locale="it_IT" pattern="dd/MM/yyyy" />
+								</h:outputText>
+
+
+								<h:outputText value=" - BET:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanRegion.totBet}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - WIN:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanRegion.totWin}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - GAMES PLAYED:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanRegion.totGamesPlayed}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - TOTAL IN:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanRegion.totTotalIn}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+
+								<h:outputText value=" - TOTAL OUT:  " style="color:#1484E6;" />
+								<h:outputText value="#{tableBeanRegion.totTotalOut}"
+									style="color:white;">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+							</p:panel>
+						</div>
+					</f:facet>
+
+				</p:dataTable>
+
+			</div>
+			<p:dialog header="Dati Contabili" widgetVar="regDialog"
+				resizable="false" width="300" showEffect="puff" hideEffect="puff">
+				<center>
+					<h:panelGrid id="display" columns="2" cellpadding="4">
+
+						<f:facet name="header">
+							<p:graphicImage
+								value="../../../images/regioni/#{tableBeanRegion.selectedObj.spaziodim.regione.nome}.gif" />
+						</f:facet>
+
+						<h:outputText value="Preu:" />
+						<h:outputText value="#{tableBeanRegion.selectedObj.preu}"
+							id="preu" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Aams:" />
+						<h:outputText value="#{tableBeanRegion.selectedObj.aams}"
+							id="aams" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Net Win:" />
+						<h:outputText value="#{tableBeanRegion.selectedObj.netWin}"
+							id="netWin" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="House Win:" />
+						<h:outputText value="#{tableBeanRegion.selectedObj.houseWin}"
+							id="houseWin" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Supplier Profit:" />
+						<h:outputText
+							value="#{tableBeanRegion.selectedObj.supplierProfit}"
+							id="supplierProfit" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Operators Profit:" />
+						<h:outputText
+							value="#{tableBeanRegion.selectedObj.operatorsProfit}"
+							id="operatorsProfit" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+						<h:outputText value="Bplus NetProfit:" />
+						<h:outputText
+							value="#{tableBeanRegion.selectedObj.bplusNetProfit}"
+							id="bplusNetProfit" styleClass="cella">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+
+					</h:panelGrid>
+				</center>
+			</p:dialog>
+
+
+
+		</h:panelGroup>
+	</h:form>
+</h:body>
+</html>

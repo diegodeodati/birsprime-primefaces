@@ -1,0 +1,11 @@
+<Context path="/birsprime" reloadable="true" antiResourceLocking="true"> 
+
+	<Resource name="jdbc/mysql_datamart" auth="Container" type="javax.sql.DataSource"
+		maxActive="4" maxIdle="2" maxWait="-1" username="diego" password="manolo.2011"
+		validationQuery="Select 1" validationQueryTimeout="10000"
+		removeAbandoned="true" removeAbandonedTimeout="5000" 
+		maxStatementsPerConnection="20" maxwait="-1"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://10.0.140.31:3306/datamart?zeroDateTimeBehavior=convertToNull" />
+
+</Context>
